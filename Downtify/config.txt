@@ -1,0 +1,6 @@
+# Spotify accounts can be bought cheaply on ebay for example
+# you can also share them or use an existing premium account of your frien
+# Please note that only one can download songs at the same time!
+
+username = "<username>"
+password = "<password>"
