@@ -125,7 +125,8 @@ namespace Downtify
 
         private void InvokeProcessEvents()
         {
-            syncContext.Post(obj => {
+            syncContext.Post(obj =>
+            {
                 int limit = 0;
                 session.ProcessEvents(ref limit);
             }, null);
@@ -232,7 +233,7 @@ namespace Downtify
 
             wr.Write(data);
 
-            if(OnDownloadProgress != null)
+            if (OnDownloadProgress != null)
             {
                 counter++;
                 var duration = downloadingTrack.Duration();
@@ -260,12 +261,39 @@ namespace Downtify
             session.PlayerPlay(false);
             wr.Close();
 
-            // Move File
-            var dir = downloadPath + downloadingTrack.Album().Name() + "\\";
+            // Move File 
+            //Replace Invalid Characters (Crash Fix)
+            string album = downloadingTrack.Album().Name();
+            album = filterForFileName(album);
+
+            var dir = downloadPath + album + "\\";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            var fileName = dir + GetTrackFullName(downloadingTrack) + ".mp3";
-            File.Move("downloading", fileName);
+
+            string song = GetTrackFullName(downloadingTrack);
+            song = filterForFileName(song);
+
+            var fileName = dir + song + ".mp3";
+
+            //Crash on double Song fix
+            try
+            {
+                File.Move("downloading", fileName);
+            }
+            catch (Exception e)
+            {
+                album = "doubletracks";
+
+                dir = downloadPath + album + "\\";
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                song = GetTrackFullName(downloadingTrack);
+                song = filterForFileName(song);
+
+                fileName = dir + song + ".mp3";
+                File.Move("downloading", fileName);
+            }
 
             // Tag
             var u = new UltraID3();
@@ -337,5 +365,13 @@ namespace Downtify
             if (OnDownloadProgress != null)
                 OnDownloadProgress(0);
         }
+
+        private string filterForFileName(string _fileName)
+        { // Replace invalid file name characters \ /:*?"<>
+            _fileName = _fileName.Replace(":", ""); _fileName = _fileName.Replace("*", ""); _fileName = _fileName.Replace("?", ""); _fileName = _fileName.Replace("<", ""); _fileName = _fileName.Replace(">", ""); _fileName = _fileName.Replace("|", ""); _fileName = _fileName.Replace("/", ""); _fileName = _fileName.Replace("\\", ""); _fileName = _fileName.Replace("\"", "");
+            return _fileName;
+
+        }
+
     }
 }
