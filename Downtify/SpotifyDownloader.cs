@@ -35,6 +35,9 @@ namespace Downtify
 
     public class SpotifyDownloader : SpotifySessionListener
     {
+
+        public static String playlistName = "";
+
         public static string GetTrackArtistsNames(Track track)
         {
             var ret = "";
@@ -60,14 +63,14 @@ namespace Downtify
 
         public bool Loaded { get { return session.User().IsLoaded(); } }
 
-        SpotifySession session;
+        static SpotifySession session;
         Track downloadingTrack;
         Mp3Writer wr;
         SynchronizationContext syncContext;
 
         static string appPath = AppDomain.CurrentDomain.BaseDirectory;
         static string tmpPath = appPath + "cache\\";
-        static string downloadPath = appPath + "download\\";
+        public static string downloadPath = appPath + "download\\";
 
         #region key
 
@@ -125,8 +128,7 @@ namespace Downtify
 
         private void InvokeProcessEvents()
         {
-            syncContext.Post(obj =>
-            {
+            syncContext.Post(obj => {
                 int limit = 0;
                 session.ProcessEvents(ref limit);
             }, null);
@@ -233,7 +235,7 @@ namespace Downtify
 
             wr.Write(data);
 
-            if (OnDownloadProgress != null)
+            if(OnDownloadProgress != null)
             {
                 counter++;
                 var duration = downloadingTrack.Duration();
@@ -261,8 +263,7 @@ namespace Downtify
             session.PlayerPlay(false);
             wr.Close();
 
-            // Move File 
-            //Replace Invalid Characters (Crash Fix)
+            // Move File
             string album = downloadingTrack.Album().Name();
             album = filterForFileName(album);
 
@@ -275,24 +276,26 @@ namespace Downtify
 
             var fileName = dir + song + ".mp3";
 
-            //Crash on double Song fix
             try
             {
                 File.Move("downloading", fileName);
+                FileInfo fileInfo = new FileInfo(fileName);
+                String path = fileInfo.DirectoryName;
             }
-            catch (Exception e)
-            {
-                album = "doubletracks";
+            catch (Exception e) {
 
-                dir = downloadPath + album + "\\";
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
+                File.Delete("downloading");
+                SpotifyDownloader.LogString("Track deleted because the track already exists! Path: " + fileName + " Track Name:" + SpotifyDownloader.GetTrackFullName(downloadingTrack));
+                
+                base.EndOfTrack(session);
 
-                song = GetTrackFullName(downloadingTrack);
-                song = filterForFileName(song);
+                if (OnDownloadProgress != null)
+                    OnDownloadProgress(100);
 
-                fileName = dir + song + ".mp3";
-                File.Move("downloading", fileName);
+                if (OnDownloadComplete != null)
+                    OnDownloadComplete();
+                
+                return;
             }
 
             // Tag
@@ -317,6 +320,8 @@ namespace Downtify
 
             base.EndOfTrack(session);
 
+            SpotifyDownloader.LogString("Track downloaded and saved! Path: " + fileName + " Track Name:" + SpotifyDownloader.GetTrackFullName(downloadingTrack));
+
             if (OnDownloadProgress != null)
                 OnDownloadProgress(100);
 
@@ -338,6 +343,7 @@ namespace Downtify
         {
             var link = Link.CreateFromString(linkStr);
             var playlist = Playlist.Create(session, link);
+            playlistName = playlist.Name();
             await WaitForBool(playlist.IsLoaded);
             for (int i = 0; i < playlist.NumTracks(); i++)
                 await WaitForBool(playlist.Track(i).IsLoaded);
@@ -352,26 +358,93 @@ namespace Downtify
             return track;
         }
 
+        public Track FetchTrackString(string linkStr)
+        {
+            var link = Link.CreateFromString(linkStr);
+            Track track = link.AsTrack();
+            return track;
+        }
+
+
+        public static Boolean canPlay(Track track)
+        {
+            try
+            {
+                session.PlayerLoad(track);
+                session.PlayerPlay(true);
+                session.PlayerPlay(false);
+                session.PlayerUnload();
+                return true;
+            }
+            catch (Exception e)
+            {
+                session.PlayerPlay(false);
+                session.PlayerUnload();
+                return false;   
+            }
+        }
+
         public void Download(Track track)
         {
-            counter = 0;
-            downloadingTrack = track;
-            var stream = new FileStream("downloading", FileMode.Create);
-            var waveFormat = new WaveFormat(44100, 16, 2);
-            var beConfig = new BE_CONFIG(waveFormat, 320);
-            wr = new Mp3Writer(stream, waveFormat, beConfig);
-            session.PlayerLoad(track);
-            session.PlayerPlay(true);
-            if (OnDownloadProgress != null)
-                OnDownloadProgress(0);
+            try
+            {
+                counter = 0;
+                downloadingTrack = track;
+                var stream = new FileStream("downloading", FileMode.Create);
+                var waveFormat = new WaveFormat(44100, 16, 2);
+                var beConfig = new BE_CONFIG(waveFormat, 320);
+                wr = new Mp3Writer(stream, waveFormat, beConfig);
+                session.PlayerLoad(track);
+                session.PlayerPlay(true);
+                if (OnDownloadProgress != null)
+                    OnDownloadProgress(0);
+
+            }
+            catch (Exception e)
+            {
+                SpotifyDownloader.LogString("Error when playing/downloading!" + " Track Name:" + SpotifyDownloader.GetTrackFullName(downloadingTrack));
+            }
         }
 
-        private string filterForFileName(string _fileName)
-        { // Replace invalid file name characters \ /:*?"<>
-            _fileName = _fileName.Replace(":", ""); _fileName = _fileName.Replace("*", ""); _fileName = _fileName.Replace("?", ""); _fileName = _fileName.Replace("<", ""); _fileName = _fileName.Replace(">", ""); _fileName = _fileName.Replace("|", ""); _fileName = _fileName.Replace("/", ""); _fileName = _fileName.Replace("\\", ""); _fileName = _fileName.Replace("\"", "");
-            return _fileName;
 
+    public static string filterForFileName(string _fileName) { // Replace invalid file name characters \ /:*?"<>
+    _fileName = _fileName.Replace(":",""); _fileName = _fileName.Replace("*",""); _fileName = _fileName.Replace("?",""); _fileName = _fileName.Replace("<",""); _fileName = _fileName.Replace(">",""); _fileName = _fileName.Replace("|",""); _fileName = _fileName.Replace("/",""); _fileName = _fileName.Replace("\\",""); _fileName = _fileName.Replace("\"",""); 
+    return _fileName; 
+    
+    }
+
+
+    public static void LogString(string message)
+    {
+        using (StreamWriter w = File.AppendText("log.txt"))
+        {
+            Log(message, w);
         }
+
+        using (StreamReader r = File.OpenText("log.txt"))
+        {
+            DumpLog(r);
+        }
+    }
+    public static void Log(string logMessage, TextWriter w)
+    {
+        w.Write("\r\nLog Entry : ");
+        w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
+            DateTime.Now.ToLongDateString());
+        w.WriteLine("  :");
+        w.WriteLine("  :{0}", logMessage);
+        w.WriteLine("-------------------------------");
+        w.WriteLine(" ");
+    }
+
+    public static void DumpLog(StreamReader r)
+    {
+        string line;
+        while ((line = r.ReadLine()) != null)
+        {
+            Console.WriteLine(line);
+        }
+    }
 
     }
 }
