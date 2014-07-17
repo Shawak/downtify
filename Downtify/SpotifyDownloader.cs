@@ -35,6 +35,10 @@ namespace Downtify
 
     public class SpotifyDownloader : SpotifySessionListener
     {
+
+        public static String playlistName = "";
+        static String[] replace = { ":", "*", "?", "<", ">", "|", "/", "\"", "\\" };
+
         public static string GetTrackArtistsNames(Track track)
         {
             var ret = "";
@@ -60,14 +64,14 @@ namespace Downtify
 
         public bool Loaded { get { return session.User().IsLoaded(); } }
 
-        SpotifySession session;
+        static SpotifySession session;
         Track downloadingTrack;
         Mp3Writer wr;
         SynchronizationContext syncContext;
 
         static string appPath = AppDomain.CurrentDomain.BaseDirectory;
         static string tmpPath = appPath + "cache\\";
-        static string downloadPath = appPath + "download\\";
+        public static string downloadPath = appPath + "download\\";
 
         #region key
 
@@ -223,6 +227,7 @@ namespace Downtify
 
         public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
         {
+            try { 
             if (num_frames == 0)
                 return 0;
 
@@ -231,6 +236,8 @@ namespace Downtify
             Marshal.Copy(frames, data, 0, size);
 
             wr.Write(data);
+            }
+            catch (Exception e) { }
 
             if(OnDownloadProgress != null)
             {
@@ -261,33 +268,67 @@ namespace Downtify
             wr.Close();
 
             // Move File
-            var dir = downloadPath + downloadingTrack.Album().Name() + "\\";
+            string album = downloadingTrack.Album().Name();
+            album = filterForFileName(album);
+
+            var dir = downloadPath + album + "\\";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            var fileName = dir + GetTrackFullName(downloadingTrack) + ".mp3";
-            File.Move("downloading", fileName);
 
-            // Tag
-            var u = new UltraID3();
-            //u.GetMPEGTrackInfo();
-            u.Read(fileName);
-            u.Artist = GetTrackArtistsNames(downloadingTrack);
-            u.Title = downloadingTrack.Name();
-            u.Album = downloadingTrack.Album().Name();
+            string song = GetTrackFullName(downloadingTrack);
+            song = filterForFileName(song);
 
-            var imageID = downloadingTrack.Album().Cover(ImageSize.Large);
-            var image = SpotifySharp.Image.Create(session, imageID);
-            await WaitForBool(image.IsLoaded);
+            var fileName = dir + song + ".mp3";
 
-            var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-            var bmp = (Bitmap)tc.ConvertFrom(image.Data());
+            try
+            {
+                File.Move("downloading", fileName);
+                FileInfo fileInfo = new FileInfo(fileName);
+                String path = fileInfo.DirectoryName;
+            }
+            catch (Exception e) {
 
-            var pictureFrame = new ID3v23PictureFrame(bmp, PictureTypes.CoverFront, "image", TextEncodingTypes.ISO88591);
-            u.ID3v2Tag.Frames.Add(pictureFrame);
+                File.Delete("downloading");
+                LogString("Track deleted because the track already exists! Path: " + fileName + " Track Name:" + SpotifyDownloader.GetTrackFullName(downloadingTrack));
+                
+                base.EndOfTrack(session);
 
-            u.Write();
+                if (OnDownloadProgress != null)
+                    OnDownloadProgress(100);
 
-            base.EndOfTrack(session);
+                if (OnDownloadComplete != null)
+                    OnDownloadComplete();
+                
+                return;
+            }
+
+            try
+            {
+                // Tag
+                var u = new UltraID3();
+                //u.GetMPEGTrackInfo();
+                u.Read(fileName);
+                u.Artist = GetTrackArtistsNames(downloadingTrack);
+                u.Title = downloadingTrack.Name();
+                u.Album = downloadingTrack.Album().Name();
+
+                var imageID = downloadingTrack.Album().Cover(ImageSize.Large);
+                var image = SpotifySharp.Image.Create(session, imageID);
+                await WaitForBool(image.IsLoaded);
+
+                var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
+                var bmp = (Bitmap)tc.ConvertFrom(image.Data());
+
+                var pictureFrame = new ID3v23PictureFrame(bmp, PictureTypes.CoverFront, "image", TextEncodingTypes.ISO88591);
+                u.ID3v2Tag.Frames.Add(pictureFrame);
+
+                u.Write();
+
+                base.EndOfTrack(session);
+            }
+            catch (Exception e) { };
+
+            LogString("Track downloaded and saved! Path: " + fileName + " Track Name:" + SpotifyDownloader.GetTrackFullName(downloadingTrack));
 
             if (OnDownloadProgress != null)
                 OnDownloadProgress(100);
@@ -310,6 +351,7 @@ namespace Downtify
         {
             var link = Link.CreateFromString(linkStr);
             var playlist = Playlist.Create(session, link);
+            playlistName = playlist.Name();
             await WaitForBool(playlist.IsLoaded);
             for (int i = 0; i < playlist.NumTracks(); i++)
                 await WaitForBool(playlist.Track(i).IsLoaded);
@@ -324,18 +366,100 @@ namespace Downtify
             return track;
         }
 
+        public Track FetchTrackString(string linkStr)
+        {
+            var link = Link.CreateFromString(linkStr);
+            Track track = link.AsTrack();
+            return track;
+        }
+
+
+        public static Boolean canPlay(Track track)
+        {
+            try
+            {
+                session.PlayerLoad(track);
+                session.PlayerPlay(true);
+                session.PlayerPlay(false);
+                session.PlayerUnload();
+                return true;
+            }
+            catch (Exception e)
+            {
+                session.PlayerPlay(false);
+                session.PlayerUnload();
+                return false;   
+            }
+        }
+
         public void Download(Track track)
         {
-            counter = 0;
-            downloadingTrack = track;
-            var stream = new FileStream("downloading", FileMode.Create);
-            var waveFormat = new WaveFormat(44100, 16, 2);
-            var beConfig = new BE_CONFIG(waveFormat, 320);
-            wr = new Mp3Writer(stream, waveFormat, beConfig);
-            session.PlayerLoad(track);
-            session.PlayerPlay(true);
-            if (OnDownloadProgress != null)
-                OnDownloadProgress(0);
+            try
+            {
+                counter = 0;
+                downloadingTrack = track;
+                var stream = new FileStream("downloading", FileMode.Create);
+                var waveFormat = new WaveFormat(44100, 16, 2);
+                var beConfig = new BE_CONFIG(waveFormat, 320);
+                wr = new Mp3Writer(stream, waveFormat, beConfig);
+                session.PlayerLoad(track);
+                session.PlayerPlay(true);
+                if (OnDownloadProgress != null)
+                    OnDownloadProgress(0);
+
+            }
+            catch (Exception e)
+            {
+                LogString("Error when playing/downloading!" + " Track Name:" + SpotifyDownloader.GetTrackFullName(downloadingTrack));
+            }
         }
+
+
+    public static string filterForFileName(string _fileName) { // Replace invalid file name characters \ /:*?"<>
+    foreach(String s in replace)
+        _fileName =  _fileName.Replace(s, "");
+    return _fileName; 
+    }
+
+
+    public static void LogString(string message)
+    {
+        using (StreamWriter w = File.AppendText("log.txt"))
+        {
+            Log(message, w);
+        }
+
+        using (StreamReader r = File.OpenText("log.txt"))
+        {
+            DumpLog(r);
+        }
+    }
+    public static void Log(string logMessage, TextWriter w)
+    {
+        try { 
+        w.Write("\r\nLog Entry : ");
+        w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
+            DateTime.Now.ToLongDateString());
+        w.WriteLine("  :");
+        w.WriteLine("  :{0}", logMessage);
+        w.WriteLine("-------------------------------");
+        w.WriteLine(" ");
+        w.Close();
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+
+    public static void DumpLog(StreamReader r)
+    {
+        string line;
+        while ((line = r.ReadLine()) != null)
+        {
+            Console.WriteLine(line);
+        }
+    }
+
     }
 }
