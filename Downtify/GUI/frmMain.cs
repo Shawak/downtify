@@ -16,11 +16,11 @@ namespace Downtify.GUI
     public partial class frmMain : Form
     {
         SpotifyDownloader downloader;
-        public static StreamWriter sw;
-        public static List<String> files = new List<String>();
-        public static String playlistName;
-        public static int playlistLength = 0;
-        public static int current = 1;
+        public StreamWriter sw;
+        public List<String> files = new List<String>();
+        public String playlistName;
+        public int playlistLength = 0;
+        public int current = 1;
 
         public frmMain()
         {
@@ -32,11 +32,15 @@ namespace Downtify.GUI
             downloader.OnDownloadProgress += downloader_OnDownloadProgress;
             placeholderTextBox1.Enabled = false;
             placeholderTextBox1.Text = "Downloading: Nothing";
+
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
         }
 
-        private void downloader_showError()
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("Error Skipped!");
+            MessageBox.Show((e.ExceptionObject as Exception).Message, "Unhandled UI Exception");
+            SpotifyDownloader.LogString((e.ExceptionObject as Exception).Message);
         }
 
         // Very ugly, todo: move parts of this to the downloader class
@@ -61,13 +65,8 @@ namespace Downtify.GUI
                 return;
             }
 
-
             SpotifySharp.Track item = ((TrackItem)listBoxTracks.SelectedItems[0]).Track;
-            string album = item.Album().Name();
-            album = SpotifyDownloader.filterForFileName(album);
-            var dir = SpotifyDownloader.downloadPath + album + "\\";
-            String fileName = dir + SpotifyDownloader.GetTrackFullName(item) + ".mp3";
-
+            String fileName = getFileName(item);
 
             files.Add(fileName);
 
@@ -81,7 +80,7 @@ namespace Downtify.GUI
         // Very ugly, todo: move parts of this to the downloader class
         private void downloader_OnDownloadComplete()
         {
-            current = current + 1;
+            current++;
 
             var list = new object[listBoxTracks.SelectedItems.Count];
             for (int i = 1; i < listBoxTracks.SelectedItems.Count; i++)
@@ -102,14 +101,8 @@ namespace Downtify.GUI
                 return;
             }
 
-
             SpotifySharp.Track item = ((TrackItem)listBoxTracks.SelectedItems[0]).Track;
-            string album = item.Album().Name();
-            album = SpotifyDownloader.filterForFileName(album);
-            var dir = SpotifyDownloader.downloadPath + album + "\\";
-            String fileName = dir + SpotifyDownloader.GetTrackFullName(item) +".mp3";
-
-
+            String fileName = getFileName(item);
             
             if(File.Exists(fileName)) {
                 downloader_OnDownloadComplete();
@@ -119,7 +112,6 @@ namespace Downtify.GUI
 
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
             placeholderTextBox1.Text = "Downloading: " + SpotifyDownloader.GetTrackFullName(item) + " (" + current + "/" + playlistLength + " Track/s)";
-
         }
 
         private void CreatePlayList(String name, List<String> files)
@@ -127,7 +119,7 @@ namespace Downtify.GUI
             if (String.IsNullOrEmpty(name))
                 return;
 
-
+            name = SpotifyDownloader.filterForFileName(name);
             // Open a file to write
             string sFileName = name + ".wpl";
             FileStream fs = File.Create(sFileName);
@@ -166,7 +158,7 @@ namespace Downtify.GUI
             }
         }
 
-        public static void ProcessFile(string path)
+        public void ProcessFile(string path)
         {
             if (String.IsNullOrEmpty(path))
                 return;
@@ -265,7 +257,6 @@ namespace Downtify.GUI
                     textBoxLink.Clear();
                     placeholderTextBox1.Text = "Loaded Track: " + track.Name() + " (1 Track)";
                 }
-
             }
             catch (NullReferenceException)
             {
@@ -273,7 +264,6 @@ namespace Downtify.GUI
             finally
             {
                 EnableControls(true);
-                
             }
         }
 
@@ -308,10 +298,7 @@ namespace Downtify.GUI
 
             EnableControls(false);
             SpotifySharp.Track item = ((TrackItem)listBoxTracks.SelectedItems[0]).Track;
-            string album = item.Album().Name();
-            album = SpotifyDownloader.filterForFileName(album);
-            var dir = SpotifyDownloader.downloadPath + album + "\\";
-            String fileName = dir + SpotifyDownloader.GetTrackFullName(item) + ".mp3";
+            String fileName = getFileName(item);
 
             if (File.Exists(fileName))
             {
@@ -332,9 +319,14 @@ namespace Downtify.GUI
             downloader_OnPlaylistCreate();
         }
 
-        private void placeholderTextBox1_TextChanged(object sender, EventArgs e)
-        {
+        private void placeholderTextBox1_TextChanged(object sender, EventArgs e) {}
 
+        public static String getFileName(SpotifySharp.Track item) {
+            string album = item.Album().Name();
+            album = SpotifyDownloader.filterForFileName(album);
+            var dir = SpotifyDownloader.downloadPath + album + "\\";
+            String fileName = dir + SpotifyDownloader.GetTrackFullName(item) + ".mp3";
+            return fileName;
         }
     }
 }
