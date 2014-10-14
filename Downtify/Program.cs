@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Downtify.GUI;
+using System;
+using System.Threading;
 using System.Windows.Forms;
-
-using Downtify.GUI;
-using System.Diagnostics;
-using System.Security.Principal;
 
 namespace Downtify
 {
@@ -22,14 +19,28 @@ namespace Downtify
                 return;
             }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+            bool isNew;
+            var mutex = new Mutex(true, "Downtify", out isNew);
+
+            if (!isNew)
+            {
+                MessageBox.Show("Application is already running.");
+                return;
+            }
+
+            Run();
         }
 
         private static bool IsRunningOnMono()
         {
             return Type.GetType("Mono.Runtime") != null;
+        }
+
+        static void Run()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new frmMain());
         }
     }
 }

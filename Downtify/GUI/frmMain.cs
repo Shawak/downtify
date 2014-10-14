@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading.Tasks;
-
-using System.Web;
-using System.Net;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Downtify.GUI
 {
@@ -28,7 +19,7 @@ namespace Downtify.GUI
         }
 
         // Very ugly, todo: move parts of this to the downloader class
-        private void downloader_OnDownloadComplete()
+        private void downloader_OnDownloadComplete(bool successfully)
         {
             var list = new object[listBoxTracks.SelectedItems.Count];
             for (int i = 1; i < listBoxTracks.SelectedItems.Count; i++)
@@ -91,7 +82,7 @@ namespace Downtify.GUI
         {
             if (!isLoggedIn)
             {
-                MessageBox.Show("Error Login in!");
+                MessageBox.Show("Error logging in!", "Error");
                 Application.Exit();
                 return;
             }
@@ -162,6 +153,12 @@ namespace Downtify.GUI
         {
             if (listBoxTracks.SelectedItems.Count == 0)
                 return;
+
+            if (!downloader.IsDownloadFolderEmpty())
+            {
+                MessageBox.Show("Please enter the download directory before starting downloading.", "Error");
+                return;
+            }
 
             EnableControls(false);
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
