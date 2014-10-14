@@ -214,6 +214,10 @@ namespace Downtify
             {
                 counter++;
                 var duration = downloadingTrack.Duration();
+                // Todo: Find out how to calculate this correctly,
+                // so far 46.4 is used to calculate the process
+                // but there should be a way to calculate this
+                // with the given variables
                 var process = (int)Math.Round((double)100 / duration * (46.4 * counter), 0);
                 OnDownloadProgress(process);
             }
@@ -304,9 +308,10 @@ namespace Downtify
 
         public void Download(Track track)
         {
-            if (!canPlay(track) && OnDownloadComplete != null)
+            if (!canPlay(track))
             {
-                OnDownloadComplete(false);
+                if (OnDownloadComplete != null)
+                    OnDownloadComplete(false);
                 return;
             }
 
