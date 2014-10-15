@@ -156,7 +156,7 @@ namespace Downtify.GUI
 
             if (!downloader.IsDownloadFolderEmpty())
             {
-                MessageBox.Show("Please enter the download directory before starting downloading.", "Error");
+                MessageBox.Show("Please empty the download directory before starting downloading.", "Error");
                 return;
             }
 

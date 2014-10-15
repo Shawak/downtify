@@ -243,11 +243,11 @@ namespace Downtify
             wr.Close();
 
             // Move File
-            var dir = downloadPath + downloadingTrack.Album().Name() + "\\";
+            var dir = downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            var fileName = dir + GetTrackFullName(downloadingTrack) + ".mp3";
-            File.Move("downloading", escapeFilename(fileName));
+            var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
+            File.Move("downloading", fileName);
 
             // Tag
             var u = new UltraID3();
@@ -327,11 +327,11 @@ namespace Downtify
                 OnDownloadProgress(0);
         }
 
-        string escapeFilename(string fileName)
+        string escape(string filepath)
         {
             foreach(var c in new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))
-                fileName = fileName.Replace(fileName, "?");
-            return fileName;
+                filepath = filepath.Replace(c, '_');
+            return filepath;
         }
 
         bool canPlay(Track track)
