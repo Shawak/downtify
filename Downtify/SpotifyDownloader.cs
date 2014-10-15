@@ -84,7 +84,6 @@ namespace Downtify
 
             syncContext = SynchronizationContext.Current;
             session = SpotifySession.Create(config);
-            Task.Factory.StartNew(() => InvokeProcessEvents());
         }
 
         public bool IsDownloadFolderEmpty()
@@ -109,7 +108,7 @@ namespace Downtify
 
         public override void NotifyMainThread(SpotifySession session)
         {
-            InvokeProcessEvents();
+            Task.Factory.StartNew(() => InvokeProcessEvents());
             base.NotifyMainThread(session);
         }
 
