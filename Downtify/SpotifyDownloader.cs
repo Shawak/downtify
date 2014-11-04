@@ -91,6 +91,11 @@ namespace Downtify
             return Directory.GetDirectories(downloadPath).Length == 0
                 && Directory.GetFiles(downloadPath).Length == 0;
         }
+		
+		public String getDownloadFolder()
+		{
+			return downloadPath;
+		}
 
         private void InvokeProcessEvents()
         {
@@ -255,6 +260,7 @@ namespace Downtify
             u.Artist = GetTrackArtistsNames(downloadingTrack);
             u.Title = downloadingTrack.Name();
             u.Album = downloadingTrack.Album().Name();
+			u.TrackNum = (short)downloadingTrack.Index();
 
             var imageID = downloadingTrack.Album().Cover(ImageSize.Large);
             var image = SpotifySharp.Image.Create(session, imageID);

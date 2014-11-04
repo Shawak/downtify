@@ -7,7 +7,9 @@ namespace Downtify.GUI
     public partial class frmMain : Form
     {
         SpotifyDownloader downloader;
-
+		bool shutdown;
+		int downloadCount = 0;
+		int totalProgressTemp;
         public frmMain()
         {
             InitializeComponent();
@@ -16,12 +18,14 @@ namespace Downtify.GUI
             downloader.OnLoginResult += OnLoginResult;
             downloader.OnDownloadComplete += downloader_OnDownloadComplete;
             downloader.OnDownloadProgress += downloader_OnDownloadProgress;
+			
+			
         }
 
         // Very ugly, todo: move parts of this to the downloader class
         private void downloader_OnDownloadComplete(bool successfully)
         {
-            var list = new object[listBoxTracks.SelectedItems.Count];
+		   var list = new object[listBoxTracks.SelectedItems.Count];
             for (int i = 1; i < listBoxTracks.SelectedItems.Count; i++)
                 list[i - 1] = listBoxTracks.SelectedItems[i];
 
@@ -33,11 +37,20 @@ namespace Downtify.GUI
             if (listBoxTracks.SelectedItems.Count == 0)
             {
                 listBoxTracks.SelectedItems.Clear();
+				this.shutdown = checkBoxShutdown.Checked;
+				if(this.shutdown)
+				{
+					System.Diagnostics.Process.Start("shutdown","/s /t 60");
+				}
+				progressBarTotal.Value = 100;
                 MessageBox.Show("DONE");
+				
                 EnableControls(true);
                 return;
             }
-
+			
+			
+			
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
         }
 
@@ -49,6 +62,27 @@ namespace Downtify.GUI
                     return;
 
                  progressBar1.Value = value;
+				 
+				//totalProgressBar
+				double totalProgress = 1/(double)(this.downloadCount)*100;
+				
+				int progress = (int)Math.Round((double)value/100*Math.Floor(totalProgress));
+				
+				if(progressBarTotal.Value+(progress - this.totalProgressTemp) < 100)
+				{
+					if(progress < this.totalProgressTemp)
+					{
+						progressBarTotal.Value += progress;
+					}
+					else
+					{
+						progressBarTotal.Value += progress - this.totalProgressTemp;
+					}
+					
+					
+				}
+				
+				this.totalProgressTemp = progress;
             });
         }
 
@@ -80,6 +114,7 @@ namespace Downtify.GUI
 
         private void OnLoginResult(bool isLoggedIn)
         {
+			//MessageBox.Show("OnLoginResult"+isLoggedIn);
             if (!isLoggedIn)
             {
                 MessageBox.Show("Error logging in!", "Error");
@@ -93,7 +128,11 @@ namespace Downtify.GUI
         private void EnableControls(bool enable)
         {
             foreach (var control in this.Controls)
-                ((Control)control).Enabled = enable;
+			{
+				
+				((Control)control).Enabled = enable;
+			}
+                
         }
 
         private async  void textBoxLink_TextChanged(object sender, EventArgs e)
@@ -161,7 +200,38 @@ namespace Downtify.GUI
             }
 
             EnableControls(false);
+			this.downloadCount = listBoxTracks.SelectedItems.Count;
+			progressBarTotal.Value = 0;
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
         }
+		
+		private void buttonClearDownloads_Click(object sender, EventArgs e)
+		{
+			DialogResult dialogResult = MessageBox.Show("Clearing download folder... Are you sure?", "Clear download folder", MessageBoxButtons.YesNo);
+			
+			if(dialogResult == DialogResult.Yes)
+			{
+			
+				
+				var dir = Directory.EnumerateFileSystemEntries(downloader.getDownloadFolder());
+				
+				foreach(var entry in dir)
+				{
+					Directory.Delete(entry, true);
+				}
+			}
+		}
+
+        private void buttonSelectAll_Click(object sender, EventArgs e)
+        {
+            var list = new TrackItem[listBoxTracks.Items.Count];
+            listBoxTracks.Items.CopyTo(list, 0);
+
+            listBoxTracks.SelectedItems.Clear();
+            foreach (var track in list)
+                listBoxTracks.SelectedItems.Add(track);
+        }
+		
+		
     }
 }
