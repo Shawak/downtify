@@ -34,7 +34,6 @@
             this.checkBoxShutdown = new System.Windows.Forms.CheckBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.progressBarTotal = new System.Windows.Forms.ProgressBar();
-            this.buttonSelectAll = new System.Windows.Forms.Button();
             this.textBoxLink = new Downtify.GUI.PlaceholderTextBox();
             this.SuspendLayout();
             // 
@@ -55,7 +54,7 @@
             this.buttonDownload.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonDownload.Location = new System.Drawing.Point(402, 241);
             this.buttonDownload.Name = "buttonDownload";
-            this.buttonDownload.Size = new System.Drawing.Size(102, 23);
+            this.buttonDownload.Size = new System.Drawing.Size(103, 23);
             this.buttonDownload.TabIndex = 3;
             this.buttonDownload.Text = "Download";
             this.buttonDownload.UseVisualStyleBackColor = true;
@@ -96,20 +95,6 @@
             this.progressBarTotal.Size = new System.Drawing.Size(331, 23);
             this.progressBarTotal.TabIndex = 6;
             // 
-            // buttonSelectAll
-            // 
-            this.buttonSelectAll.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.buttonSelectAll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonSelectAll.Location = new System.Drawing.Point(485, 40);
-            this.buttonSelectAll.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonSelectAll.Name = "buttonSelectAll";
-            this.buttonSelectAll.Size = new System.Drawing.Size(20, 20);
-            this.buttonSelectAll.TabIndex = 7;
-            this.buttonSelectAll.Text = "☑";
-            this.buttonSelectAll.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.buttonSelectAll.UseVisualStyleBackColor = false;
-            this.buttonSelectAll.Click += new System.EventHandler(this.buttonSelectAll_Click);
-            // 
             // textBoxLink
             // 
             this.textBoxLink.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -125,7 +110,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(517, 300);
-            this.Controls.Add(this.buttonSelectAll);
             this.Controls.Add(this.progressBarTotal);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonDownload);
@@ -150,11 +134,10 @@
         private System.Windows.Forms.ListBox listBoxTracks;
         private Downtify.GUI.PlaceholderTextBox textBoxLink;
         private System.Windows.Forms.Button buttonDownload;
-		private System.Windows.Forms.CheckBox checkBoxShutdown;
+        private System.Windows.Forms.CheckBox checkBoxShutdown;
         private System.Windows.Forms.ProgressBar progressBar1;
-		private System.Windows.Forms.ProgressBar progressBarTotal;
-		private System.Windows.Forms.Button buttonClearDownloads;
-        private System.Windows.Forms.Button buttonSelectAll;
+        private System.Windows.Forms.ProgressBar progressBarTotal;
+        private System.Windows.Forms.Button buttonClearDownloads;
     }
 }
 
