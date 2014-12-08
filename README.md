@@ -1,6 +1,6 @@
 ### What is Downtify?
 
-Downtify is an open source downloader for spotify which makes it possible to download all your favourite songs and/or
+Downtify is an open source Spofity downloader which makes it possible to download all your favourite songs and/or
 playlists directly from spotify.
 
 ### Usage
