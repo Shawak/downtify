@@ -250,11 +250,11 @@ namespace Downtify
 
             // Tag
             var u = new UltraID3();
-            //u.GetMPEGTrackInfo();
             u.Read(fileName);
             u.Artist = GetTrackArtistsNames(downloadingTrack);
             u.Title = downloadingTrack.Name();
             u.Album = downloadingTrack.Album().Name();
+            u.TrackNum = (short)downloadingTrack.Index();
 
             var imageID = downloadingTrack.Album().Cover(ImageSize.Large);
             var image = SpotifySharp.Image.Create(session, imageID);
