@@ -92,6 +92,11 @@ namespace Downtify
                 && Directory.GetFiles(downloadPath).Length == 0;
         }
 
+        public String getDownloadFolder()
+        {
+            return downloadPath;
+        }
+
         private void InvokeProcessEvents()
         {
             syncContext.Post(obj =>
@@ -328,7 +333,7 @@ namespace Downtify
 
         string escape(string filepath)
         {
-            foreach(var c in new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))
+            foreach (var c in new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))
                 filepath = filepath.Replace(c, '_');
             return filepath;
         }
