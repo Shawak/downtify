@@ -62,16 +62,17 @@ namespace Downtify.GUI
             System.Threading.Thread.Sleep(200);
             this.Activate();
 
-            // very ugly too, use config parser (json for example)
+            // very ugly, use config parser (json for example) would be nicer
             string username = "", password = "";
-            foreach (var line in File.ReadAllLines("config.txt"))
+            foreach (var currentLine in File.ReadAllLines("config.txt"))
             {
-                if (line.Contains("#"))
+                var line = currentLine.Trim();
+                if (line.StartsWith("#"))
                     continue;
 
-                if (line.Contains("username"))
+                if (line.StartsWith("username"))
                     username = line.Split('"')[1].Split('"')[0];
-                else if(line.Contains("password"))
+                else if (line.StartsWith("password"))
                     password = line.Split('"')[1].Split('"')[0];
             }
 
@@ -82,7 +83,7 @@ namespace Downtify.GUI
         {
             if (!isLoggedIn)
             {
-                MessageBox.Show("Error logging in!", "Error");
+                MessageBox.Show("Error logging in, are your a premium user?", "Error");
                 Application.Exit();
                 return;
             }
