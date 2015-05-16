@@ -2,11 +2,13 @@
 using System.IO;
 using System.Windows.Forms;
 
+
 namespace Downtify.GUI
 {
     public partial class frmMain : Form
     {
         SpotifyDownloader downloader;
+        int counter = 1;
 
         public frmMain()
         {
@@ -26,6 +28,7 @@ namespace Downtify.GUI
                 list[i - 1] = listBoxTracks.SelectedItems[i];
 
             listBoxTracks.SelectedItems.Clear();
+            counter++;
 
             foreach (var track in list)
                 listBoxTracks.SelectedItems.Add(track);
@@ -34,6 +37,7 @@ namespace Downtify.GUI
             {
                 listBoxTracks.SelectedItems.Clear();
                 MessageBox.Show("DONE");
+                counter = 1;
                 EnableControls(true);
                 return;
             }
@@ -44,11 +48,12 @@ namespace Downtify.GUI
         private void downloader_OnDownloadProgress(int value)
         {
             this.Invoke((MethodInvoker)delegate
-            {
+            {                
                 if (value > 100 || value < 0)
                     return;
 
-                 progressBar1.Value = value;
+                 progressBar1.Value = value;                 
+                 label1.Text = ("Track " + counter + "/" + listBoxTracks.Items.Count);
             });
         }
 
