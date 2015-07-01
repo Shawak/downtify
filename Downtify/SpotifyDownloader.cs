@@ -28,6 +28,12 @@ namespace Downtify
         }
     }
 
+    public enum DownloadType
+    {
+        SKIP,
+        OVERWRITE
+    }
+
     public class SpotifyDownloader : SpotifySessionListener
     {
         public static string GetTrackArtistsNames(Track track)
@@ -84,12 +90,6 @@ namespace Downtify
 
             syncContext = SynchronizationContext.Current;
             session = SpotifySession.Create(config);
-        }
-
-        public bool IsDownloadFolderEmpty()
-        {
-            return Directory.GetDirectories(downloadPath).Length == 0
-                && Directory.GetFiles(downloadPath).Length == 0;
         }
 
         private void InvokeProcessEvents()
@@ -232,7 +232,7 @@ namespace Downtify
 
         public override void PlayTokenLost(SpotifySession session)
         {
-            System.Windows.Forms.MessageBox.Show("Connection Lost");
+            System.Windows.Forms.MessageBox.Show(Downtify.GUI.frmMain.lang.GetString("error/connection_lost"));
             base.PlayTokenLost(session);
         }
 
@@ -246,6 +246,10 @@ namespace Downtify
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
+            if(GetDownloadType() == DownloadType.OVERWRITE && File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
             File.Move("downloading", fileName);
 
             // Tag
@@ -297,6 +301,16 @@ namespace Downtify
             return playlist;
         }
 
+        public async Task<AlbumBrowse> FetchAlbum(string linkStr)
+        {
+            var link = Link.CreateFromString(linkStr);
+            var album = AlbumBrowse.Create(session, link.AsAlbum(), AlbumBrowseCallBack, session.UserData);
+            await WaitForBool(album.IsLoaded);
+            for (int i = 0; i < album.NumTracks(); i++)
+                await WaitForBool(album.Track(i).IsLoaded);
+            return album;
+        }
+        
         public async Task<Track> FetchTrack(string linkStr)
         {
             var link = Link.CreateFromString(linkStr);
@@ -316,6 +330,19 @@ namespace Downtify
 
             counter = 0;
             downloadingTrack = track;
+
+            var dir = downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
+            var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
+            if (GetDownloadType() == DownloadType.SKIP && File.Exists(fileName))
+            {
+                if (OnDownloadProgress != null)
+                    OnDownloadProgress(100);
+
+                if (OnDownloadComplete != null)
+                    OnDownloadComplete(true);
+                return;
+            }
+
             var stream = new FileStream("downloading", FileMode.Create);
             var waveFormat = new WaveFormat(44100, 16, 2);
             var beConfig = new BE_CONFIG(waveFormat, 320);
@@ -352,6 +379,26 @@ namespace Downtify
                 session.PlayerUnload();
             }
             return ret;
+        }
+
+        private void AlbumBrowseCallBack(AlbumBrowse browse, object userdata)
+        {
+            //Implentation not required, but method must exist.
+        }
+
+        private DownloadType GetDownloadType()
+        {
+            var typeStr = Downtify.GUI.frmMain.configuration.GetConfiguration("file_exists").ToUpper();
+            DownloadType type;
+            try
+            {
+                type = (DownloadType)Enum.Parse(typeof(DownloadType), typeStr);
+            }
+            catch (Exception e)
+            {
+                type = DownloadType.SKIP;
+            }
+            return type;
         }
     }
 }
