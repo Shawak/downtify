@@ -247,9 +247,7 @@ namespace Downtify
                 Directory.CreateDirectory(dir);
             var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
             if(GetDownloadType() == DownloadType.OVERWRITE && File.Exists(fileName))
-            {
                 File.Delete(fileName);
-            }
             File.Move("downloading", fileName);
 
             // Tag
