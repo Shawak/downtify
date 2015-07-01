@@ -7,12 +7,15 @@ namespace Downtify.GUI
     public partial class frmMain : Form
     {
         SpotifyDownloader downloader;
+        public static XmlConfiguration configuration;
+        public static LanguageXML lang;
 
         public frmMain()
         {
             InitializeComponent();
 
             downloader = new SpotifyDownloader();
+            configuration = new XmlConfiguration("config.xml");
             downloader.OnLoginResult += OnLoginResult;
             downloader.OnDownloadComplete += downloader_OnDownloadComplete;
             downloader.OnDownloadProgress += downloader_OnDownloadProgress;
@@ -33,7 +36,7 @@ namespace Downtify.GUI
             if (listBoxTracks.SelectedItems.Count == 0)
             {
                 listBoxTracks.SelectedItems.Clear();
-                MessageBox.Show("DONE");
+                MessageBox.Show(lang.GetString("download/done"));
                 EnableControls(true);
                 return;
             }
@@ -64,26 +67,47 @@ namespace Downtify.GUI
 
             // very ugly, use config parser (json for example) would be nicer
             string username = "", password = "";
-            foreach (var currentLine in File.ReadAllLines("config.txt"))
-            {
-                var line = currentLine.Trim();
-                if (line.StartsWith("#"))
-                    continue;
+            configuration.LoadConfigurationFile();
+            TransferConfig();
+            username = configuration.GetConfiguration("username");
+            password = configuration.GetConfiguration("password");
+            lang = new LanguageXML(configuration.GetConfiguration("language"));
 
-                if (line.StartsWith("username"))
-                    username = line.Split('"')[1].Split('"')[0];
-                else if (line.StartsWith("password"))
-                    password = line.Split('"')[1].Split('"')[0];
-            }
+            textBoxLink.Placeholder = lang.GetString("download/paste_uri");
 
             downloader.Login(username, password);
+        }
+
+        private void TransferConfig()
+        {
+            if(File.Exists("config.txt"))
+            {
+                string username = "", password = "";
+                foreach(var currentLine in File.ReadAllLines("config.txt"))
+                {
+                    var line = currentLine.Trim();
+                    if (line.StartsWith("#"))
+                        continue;
+
+                    if (line.StartsWith("username"))
+                        username = line.Split('"')[1].Split('"')[0];
+                    else if (line.StartsWith("password"))
+                        password = line.Split('"')[1].Split('"')[0];
+                }
+                if (configuration.GetConfiguration("username") == "USERNAME")
+                    configuration.SetConfigurationEntry("username", username);
+                if (configuration.GetConfiguration("password") == "PASSWORD")
+                    configuration.SetConfigurationEntry("password", password);
+                configuration.SaveConfigurationFile();
+                File.Delete("config.txt");
+            }
         }
 
         private void OnLoginResult(bool isLoggedIn)
         {
             if (!isLoggedIn)
             {
-                MessageBox.Show("Error logging in, are your a premium user?", "Error");
+                MessageBox.Show(lang.GetString("error/no_premium"), lang.GetString("title/error"));
                 Application.Exit();
                 return;
             }
@@ -103,6 +127,15 @@ namespace Downtify.GUI
             try
             {
                 EnableControls(false);
+                
+                //Validate pasted URI
+                if(link.Length > 0 && !link.ToLower().StartsWith("spotify:"))
+                {
+                    MessageBox.Show(lang.GetString("download/invalid_uri"));
+                    textBoxLink.Clear();
+                    return;
+                }
+
                 if (link.ToLower().Contains("playlist"))
                 {
                     var playlist = await downloader.FetchPlaylist(textBoxLink.Text);
@@ -114,6 +147,13 @@ namespace Downtify.GUI
                 {
                     var track = await downloader.FetchTrack(textBoxLink.Text);
                     listBoxTracks.Items.Add(new TrackItem(track));
+                    textBoxLink.Clear();
+                }
+                else if(link.ToLower().Contains("album"))
+                {
+                    var album = await downloader.FetchAlbum(textBoxLink.Text);
+                    for (int i = 0; i < album.NumTracks(); i++)
+                        listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
                     textBoxLink.Clear();
                 }
             }
@@ -153,11 +193,8 @@ namespace Downtify.GUI
         private void buttonDownload_Click(object sender, EventArgs e)
         {
             if (listBoxTracks.SelectedItems.Count == 0)
-                return;
-
-            if (!downloader.IsDownloadFolderEmpty())
             {
-                MessageBox.Show("Please empty the download directory before starting downloading.", "Error");
+                MessageBox.Show(lang.GetString("error/no_download_selection"), lang.GetString("title/error"));
                 return;
             }
 

@@ -1,0 +1,15 @@
+<lang>
+    <title>
+        <error>Error</error>
+    </title>
+    <download>
+        <paste_uri>Paste your track, playlist or album link here</paste_uri>
+        <done>Download finished</done>
+    </download>
+    <error>
+        <no_premium>Error logging in. Are you a Spotify Premium User?</no_premium>
+        <invalid_uri>Please use 'Copy Spotify URI' and then paste the link again.</invalid_uri>
+        <no_download_selection>Please select the songs you want to download</no_download_selection>
+        <connection_lost>Connection lost</connection_lost>
+    </error>
+</lang>
