@@ -14,8 +14,9 @@ namespace Downtify.GUI
         {
             InitializeComponent();
 
-            downloader = new SpotifyDownloader();
             configuration = new XmlConfiguration("config.xml");
+            configuration.LoadConfigurationFile();
+            downloader = new SpotifyDownloader();
             downloader.OnLoginResult += OnLoginResult;
             downloader.OnDownloadComplete += downloader_OnDownloadComplete;
             downloader.OnDownloadProgress += downloader_OnDownloadProgress;
@@ -67,7 +68,6 @@ namespace Downtify.GUI
 
             // very ugly, use config parser (json for example) would be nicer
             string username = "", password = "";
-            configuration.LoadConfigurationFile();
             TransferConfig();
             username = configuration.GetConfiguration("username");
             password = configuration.GetConfiguration("password");

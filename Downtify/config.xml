@@ -3,4 +3,6 @@
     <password>PASSWORD</password>
     <language>en</language>
     <file_exists>SKIP</file_exists>
+    <download>download/</download>
+    <cache>cache/</cache>
 </configuration>
