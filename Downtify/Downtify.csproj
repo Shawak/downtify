@@ -77,11 +77,11 @@
     </Reference>
     <Reference Include="yeti.mmedia, Version=1.0.5245.33655, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\yeti.mmedia.dll</HintPath>
+      <HintPath>Libs\yeti.mmedia.dll</HintPath>
     </Reference>
     <Reference Include="yeti.mp3, Version=1.0.5245.33657, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\yeti.mp3.dll</HintPath>
+      <HintPath>Libs\yeti.mp3.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
