@@ -56,5 +56,14 @@ namespace Downtify
             return Configuration.ContainsKey(entry) ? Configuration[entry] : null;
         }
 
+        public string GetConfiguration(string entry, string defaultValue)
+        {
+            if (GetConfiguration(entry) != null)
+                return GetConfiguration(entry);
+            SetConfigurationEntry(entry, defaultValue);
+            SaveConfigurationFile();
+            return defaultValue;
+        }
+
     }
 }
