@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
-using LibGit2Sharp;
+using NGit;
+using NGit.Api;
+using NGit.Transport;
 
 namespace DowntifyUpdater
 {
@@ -31,12 +33,12 @@ namespace DowntifyUpdater
                 else if (arg.ToLower().Equals("--force"))
                     forceInstall = true;
             }
-            if(!File.Exists(Downtify_Executable))
-            {
-                Log(Downtify_Executable + " was not found. Please execute this Updater in the Downtify-Folder.");
-                Console.ReadKey(true);
-                return;
-            }
+            //if (!File.Exists(Downtify_Executable))
+            //{
+            //    Log(Downtify_Executable + " was not found. Please execute this Updater in the Downtify-Folder.");
+            //    Console.ReadKey(true);
+            //    return;
+            //}
             Console.Title = "Downtify Updater v" + Version;
             Log("Repository Directory: " + Repo_directory);
 
@@ -66,38 +68,26 @@ namespace DowntifyUpdater
         {
             Log("Cloning from " + Git_Remote + " to Repository Directory");
             Directory.CreateDirectory(Repo_directory);
-            Repository.Clone(Git_Remote, Repo_directory);
+            Git.CloneRepository().SetDirectory(Repo_directory).SetURI(Git_Remote).Call();
         }
 
         static void Update()
         {
             Log("Checking for updates...");
-            Repository repo_local = new Repository(Repo_directory);
-            Remote remote = repo_local.Network.Remotes["origin"];
-            repo_local.Network.Fetch(remote);
-
-            Commit currentCommit = repo_local.Head.Tip;
-            Commit latestCommit = repo_local.Branches["origin/master"].Commits.First();
-
-            if (currentCommit.Sha != latestCommit.Sha)
+            Git repository = Git.Open(Repo_directory);
+            ICollection<TrackingRefUpdate> refUpdate = repository.Fetch().Call().GetTrackingRefUpdates();
+            if (refUpdate.Count > 0)
             {
-                TreeChanges changes = repo_local.Diff.Compare<TreeChanges>(currentCommit.Tree, latestCommit.Tree);
-                List<string> updatedPaths = new List<string>();
-                Log("Updated files:");
-                foreach (TreeEntryChanges c in changes)
-                {
-                    if (!updatedPaths.Contains(c.Path))
-                    {
-                        Log(c.Path);
-                        updatedPaths.Add(c.Path);
-                    }
-                }
-                repo_local.Checkout(latestCommit, new CheckoutOptions());
+                Log(String.Format("Downloading {0} Updates...", refUpdate.Count));
+                repository.BranchCreate().SetForce(true).SetName("master").SetStartPoint("origin/master").Call();
+                repository.Checkout().SetName("master").Call();
             }
             else
             {
-                Log("No updated files found");
+                Log("Repository already up2date");
             }
+            repository.GetRepository().Close();
+            repository.GetRepository().ObjectDatabase.Close();
         }
 
         static void Build()
