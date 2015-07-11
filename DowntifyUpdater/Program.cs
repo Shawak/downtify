@@ -33,12 +33,12 @@ namespace DowntifyUpdater
                 else if (arg.ToLower().Equals("--force"))
                     forceInstall = true;
             }
-            //if (!File.Exists(Downtify_Executable))
-            //{
-            //    Log(Downtify_Executable + " was not found. Please execute this Updater in the Downtify-Folder.");
-            //    Console.ReadKey(true);
-            //    return;
-            //}
+            if (!File.Exists(Downtify_Executable))
+            {
+                Log(Downtify_Executable + " was not found. Please execute this Updater in the Downtify-Folder.");
+                Console.ReadKey(true);
+                return;
+            }
             Console.Title = "Downtify Updater v" + Version;
             Log("Repository Directory: " + Repo_directory);
 

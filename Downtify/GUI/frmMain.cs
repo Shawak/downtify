@@ -129,29 +129,33 @@ namespace Downtify.GUI
                 EnableControls(false);
                 
                 //Validate pasted URI
-                if(link.Length > 0 && !link.ToLower().StartsWith("spotify:"))
+                if(link.Length > 0 && !link.ToLower().StartsWith("spotify:") && !link.Contains("play.spotify.com"))
                 {
                     MessageBox.Show(lang.GetString("download/invalid_uri"));
                     textBoxLink.Clear();
                     return;
                 }
+                else if (link.Contains("play.spotify.com"))
+                {
+                    link = BuildSpotifyURI(link);
+                }
 
                 if (link.ToLower().Contains("playlist"))
                 {
-                    var playlist = await downloader.FetchPlaylist(textBoxLink.Text);
+                    var playlist = await downloader.FetchPlaylist(link);
                     for (int i = 0; i < playlist.NumTracks(); i++)
                         listBoxTracks.Items.Add(new TrackItem(playlist.Track(i)));
                     textBoxLink.Clear();
                 }
                 else if (link.ToLower().Contains("track"))
                 {
-                    var track = await downloader.FetchTrack(textBoxLink.Text);
+                    var track = await downloader.FetchTrack(link);
                     listBoxTracks.Items.Add(new TrackItem(track));
                     textBoxLink.Clear();
                 }
                 else if(link.ToLower().Contains("album"))
                 {
-                    var album = await downloader.FetchAlbum(textBoxLink.Text);
+                    var album = await downloader.FetchAlbum(link);
                     for (int i = 0; i < album.NumTracks(); i++)
                         listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
                     textBoxLink.Clear();
@@ -200,6 +204,12 @@ namespace Downtify.GUI
 
             EnableControls(false);
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
+        }
+
+        private string BuildSpotifyURI(string link)
+        {
+            string[] splitter = link.Substring(8, link.Length-8).Split('/');
+            return "spotify:" + splitter[1] + ":" + splitter[2];
         }
     }
 }
