@@ -71,8 +71,8 @@ namespace Downtify
 
         public SpotifyDownloader()
         {
-            tmpPath = Downtify.GUI.frmMain.configuration.GetConfiguration("cache");
-            downloadPath = Downtify.GUI.frmMain.configuration.GetConfiguration("download");
+            tmpPath = Downtify.GUI.frmMain.configuration.GetConfiguration("cache", "cache/");
+            downloadPath = Downtify.GUI.frmMain.configuration.GetConfiguration("download", "download/");
 
             if (!Directory.Exists(tmpPath))
                 Directory.CreateDirectory(tmpPath);
@@ -388,7 +388,7 @@ namespace Downtify
 
         private DownloadType GetDownloadType()
         {
-            var typeStr = Downtify.GUI.frmMain.configuration.GetConfiguration("file_exists").ToUpper();
+            var typeStr = Downtify.GUI.frmMain.configuration.GetConfiguration("file_exists", "SKIP").ToUpper();
             DownloadType type;
             try
             {

@@ -71,7 +71,7 @@ namespace Downtify.GUI
             TransferConfig();
             username = configuration.GetConfiguration("username");
             password = configuration.GetConfiguration("password");
-            lang = new LanguageXML(configuration.GetConfiguration("language"));
+            lang = new LanguageXML(configuration.GetConfiguration("language", "en"));
 
             textBoxLink.Placeholder = lang.GetString("download/paste_uri");
 
