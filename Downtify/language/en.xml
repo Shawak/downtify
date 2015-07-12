@@ -5,6 +5,7 @@
     <download>
         <paste_uri>Paste your track, playlist or album link here</paste_uri>
         <done>Download finished</done>
+        <progression>Download Track: {0} of {1}</progression>
     </download>
     <error>
         <no_premium>Error logging in. Are you a Spotify Premium User?</no_premium>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Downtify.GUI
 {
@@ -41,7 +42,7 @@ namespace Downtify.GUI
                 EnableControls(true);
                 return;
             }
-
+            progressBar1.CurrentTrack++;
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
         }
 
@@ -74,6 +75,7 @@ namespace Downtify.GUI
             lang = new LanguageXML(configuration.GetConfiguration("language", "en"));
 
             textBoxLink.Placeholder = lang.GetString("download/paste_uri");
+            progressBar1.Text = lang.GetString("download/progression");
 
             downloader.Login(username, password);
         }
@@ -201,6 +203,10 @@ namespace Downtify.GUI
                 MessageBox.Show(lang.GetString("error/no_download_selection"), lang.GetString("title/error"));
                 return;
             }
+
+            progressBar1.TotalTracks = listBoxTracks.SelectedItems.Count;
+            progressBar1.CurrentTrack = 1;
+            progressBar1.ShowText = true;
 
             EnableControls(false);
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);

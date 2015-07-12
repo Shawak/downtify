@@ -119,14 +119,23 @@ namespace DowntifyUpdater
 
         static void CopyUpdate()
         {
+            //Copy Binary
             if (File.Exists(Downtify_Executable))
                 File.Delete(Downtify_Executable);
             File.Copy(Repo_directory + @"\Downtify\bin\Debug\" + Downtify_Executable, Downtify_Executable);
+            //Copy Libraries
             foreach(string dll_file in Directory.GetFiles(Repo_directory + @"\Downtify\bin\Debug", "*.dll", SearchOption.TopDirectoryOnly))
             {
                 if (File.Exists(GetFileName(dll_file)))
                     File.Delete(GetFileName(dll_file));
                 File.Copy(dll_file, GetFileName(dll_file));
+            }
+            //Copy Language Files
+            foreach (string language_file in Directory.GetFiles(Repo_directory + @"\Downtify\bin\Debug\language", "*.xml", SearchOption.TopDirectoryOnly))
+            {
+                if(File.Exists("language/" + GetFileName(language_file)))
+                    File.Delete("language/" + GetFileName(language_file));
+                File.Copy(language_file, "language/" + GetFileName(language_file));
             }
         }
 

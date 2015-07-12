@@ -31,7 +31,7 @@
             this.listBoxTracks = new System.Windows.Forms.ListBox();
             this.buttonDownload = new System.Windows.Forms.Button();
             this.textBoxLink = new Downtify.GUI.PlaceholderTextBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar1 = new Downtify.GUI.TextProgressBar();
             this.SuspendLayout();
             // 
             // listBoxTracks
@@ -100,7 +100,7 @@
         private System.Windows.Forms.ListBox listBoxTracks;
         private Downtify.GUI.PlaceholderTextBox textBoxLink;
         private System.Windows.Forms.Button buttonDownload;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private Downtify.GUI.TextProgressBar progressBar1;
     }
 }
 

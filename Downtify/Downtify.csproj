@@ -91,6 +91,9 @@
     <Compile Include="GUI\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\TextProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GUI\PlaceholderTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
