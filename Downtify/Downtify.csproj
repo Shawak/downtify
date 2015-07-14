@@ -171,12 +171,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="language/en.xml">
+    <None Include="language\en.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="language/de.xml">
+    <None Include="language\de.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
