@@ -212,10 +212,16 @@ namespace Downtify.GUI
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
         }
 
-        private string BuildSpotifyURI(string link)
+        private string BuildSpotifyURI(string url)
         {
-            string[] splitter = link.Substring(8, link.Length-8).Split('/');
-            return "spotify:" + splitter[1] + ":" + splitter[2];
+            url = url.Replace("https://", "");
+            url = url.Replace("http://", "");
+            url = url.Replace("www", "");
+            url = url.Replace("play.", "");
+            url = url.Replace(".com", "");
+            url = url.Replace("/", ":");
+
+            return url;
         }
     }
 }
