@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Downtify.GUI
 {
@@ -212,10 +213,24 @@ namespace Downtify.GUI
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
         }
 
-        private string BuildSpotifyURI(string link)
+        private string BuildSpotifyURI(string url)
         {
-            string[] splitter = link.Substring(8, link.Length-8).Split('/');
-            return "spotify:" + splitter[1] + ":" + splitter[2];
+            string uri = url;
+
+            Regex regex = new Regex(@".+(?<user>user)\/(?<uid>.+)\/(?<type>playlist|album|track)\/(?<tid>.+)");
+
+            Match match = regex.Match(url);
+
+            if(match.Success)
+            {
+                string user = match.Groups["user"].Value;
+                string uid = match.Groups["uid"].Value;
+                string type = match.Groups["type"].Value;
+                string tid = match.Groups["tid"].Value;
+
+                uri = "spotify:" + user + ":" + uid + ":" + type + ":" + tid;
+            }
+            return uri;
         }
     }
 }
