@@ -217,18 +217,16 @@ namespace Downtify.GUI
         {
             string uri = url;
 
-            Regex regex = new Regex(@".+(?<user>user)\/(?<uid>.+)\/(?<type>playlist|album|track)\/(?<tid>.+)");
+            Regex regex = new Regex(@"https?:\/\/play\.spotify\.com\/(user\/(?<uid>(\d.+))\/)?(?<type>playlist|album|track)\/(?<tid>.+)"); //ToDo: Optimize this RegEx
 
             Match match = regex.Match(url);
 
-            if(match.Success)
+            if (match.Success)
             {
-                string user = match.Groups["user"].Value;
-                string uid = match.Groups["uid"].Value;
+                string uid = match.Groups["uid"].Value != "" ? "user:" + match.Groups["uid"].Value + ":" : "";
                 string type = match.Groups["type"].Value;
                 string tid = match.Groups["tid"].Value;
-
-                uri = "spotify:" + user + ":" + uid + ":" + type + ":" + tid;
+                uri = "spotify:" + uid + type + ":" + tid;
             }
             return uri;
         }
