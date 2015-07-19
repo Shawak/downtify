@@ -69,10 +69,13 @@
             // 
             // progressBar1
             // 
+            this.progressBar1.CurrentTrack = 0;
             this.progressBar1.Location = new System.Drawing.Point(12, 241);
             this.progressBar1.Name = "progressBar1";
+            this.progressBar1.ShowText = false;
             this.progressBar1.Size = new System.Drawing.Size(381, 23);
             this.progressBar1.TabIndex = 3;
+            this.progressBar1.TotalTracks = 0;
             // 
             // frmMain
             // 
@@ -88,6 +91,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Downtify";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_Closing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.ResumeLayout(false);

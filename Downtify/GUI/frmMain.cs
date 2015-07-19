@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace Downtify.GUI
 {
@@ -63,12 +66,11 @@ namespace Downtify.GUI
             EnableControls(false);
         }
 
-        private void frmMain_Shown(object sender, EventArgs e)
+        private async void frmMain_Shown(object sender, EventArgs e)
         {
             System.Threading.Thread.Sleep(200);
             this.Activate();
 
-            // very ugly, use config parser (json for example) would be nicer
             string username = "", password = "";
             TransferConfig();
             username = configuration.GetConfiguration("username");
@@ -79,6 +81,39 @@ namespace Downtify.GUI
             progressBar1.Text = lang.GetString("download/progression");
 
             downloader.Login(username, password);
+
+            if (configuration.GetConfiguration("continue_dl", "false").ToLower() == "true" && File.Exists("download.xml"))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load("download.xml");
+                foreach (XmlNode node in doc.SelectNodes("tracks/track"))
+                    await AddDownload(node.InnerText);
+            }
+        }
+
+        private void frmMain_Closing(object sender, FormClosingEventArgs e)
+        {
+            if (buttonDownload.Enabled == false && configuration.GetConfiguration("continue_dl", "false").ToLower() == "true")
+            {
+                if (File.Exists("download.xml"))
+                    File.Delete("download.xml");
+                List<string> tracks = new List<string>();
+                foreach (TrackItem track in listBoxTracks.SelectedItems)
+                    tracks.Add(SpotifySharp.Link.CreateFromTrack(track.Track, 0).AsString());
+                if (tracks.Count > 0)
+                {
+                    XmlDocument doc = new XmlDocument();
+                    XmlNode root = doc.CreateElement("tracks");
+                    doc.AppendChild(root);
+                    foreach (string trackLink in tracks)
+                    {
+                        XmlNode track = doc.CreateElement("track");
+                        track.InnerText = trackLink;
+                        root.AppendChild(track);
+                    }
+                    doc.Save("download.xml");
+                }
+            }
         }
 
         private void TransferConfig()
@@ -124,53 +159,9 @@ namespace Downtify.GUI
                 ((Control)control).Enabled = enable;
         }
 
-        private async  void textBoxLink_TextChanged(object sender, EventArgs e)
+        private async void textBoxLink_TextChanged(object sender, EventArgs e)
         {
-            var link = textBoxLink.Text;
-            try
-            {
-                EnableControls(false);
-                
-                //Validate pasted URI
-                if(link.Length > 0 && !link.ToLower().StartsWith("spotify:") && !link.Contains("play.spotify.com"))
-                {
-                    MessageBox.Show(lang.GetString("download/invalid_uri"));
-                    textBoxLink.Clear();
-                    return;
-                }
-                else if (link.Contains("play.spotify.com"))
-                {
-                    link = BuildSpotifyURI(link);
-                }
-
-                if (link.ToLower().Contains("playlist"))
-                {
-                    var playlist = await downloader.FetchPlaylist(link);
-                    for (int i = 0; i < playlist.NumTracks(); i++)
-                        listBoxTracks.Items.Add(new TrackItem(playlist.Track(i)));
-                    textBoxLink.Clear();
-                }
-                else if (link.ToLower().Contains("track"))
-                {
-                    var track = await downloader.FetchTrack(link);
-                    listBoxTracks.Items.Add(new TrackItem(track));
-                    textBoxLink.Clear();
-                }
-                else if(link.ToLower().Contains("album"))
-                {
-                    var album = await downloader.FetchAlbum(link);
-                    for (int i = 0; i < album.NumTracks(); i++)
-                        listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
-                    textBoxLink.Clear();
-                }
-            }
-            catch (NullReferenceException)
-            {
-            }
-            finally
-            {
-                EnableControls(true);
-            }
+            await AddDownload(textBoxLink.Text);
         }
 
         private void listBoxTracks_KeyDown(object sender, KeyEventArgs e)
@@ -211,6 +202,54 @@ namespace Downtify.GUI
 
             EnableControls(false);
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
+        }
+
+        private async Task AddDownload(string link)
+        {
+            try
+            {
+                EnableControls(false);
+
+                //Validate pasted URI
+                if (link.Length > 0 && !link.ToLower().StartsWith("spotify:") && !link.Contains("play.spotify.com"))
+                {
+                    MessageBox.Show(lang.GetString("download/invalid_uri"));
+                    textBoxLink.Clear();
+                    return;
+                }
+                else if (link.Contains("play.spotify.com"))
+                {
+                    link = BuildSpotifyURI(link);
+                }
+
+                if (link.ToLower().Contains("playlist"))
+                {
+                    var playlist = await downloader.FetchPlaylist(link);
+                    for (int i = 0; i < playlist.NumTracks(); i++)
+                        listBoxTracks.Items.Add(new TrackItem(playlist.Track(i)));
+                    textBoxLink.Clear();
+                }
+                else if (link.ToLower().Contains("track"))
+                {
+                    var track = await downloader.FetchTrack(link);
+                    listBoxTracks.Items.Add(new TrackItem(track));
+                    textBoxLink.Clear();
+                }
+                else if (link.ToLower().Contains("album"))
+                {
+                    var album = await downloader.FetchAlbum(link);
+                    for (int i = 0; i < album.NumTracks(); i++)
+                        listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
+                    textBoxLink.Clear();
+                }
+            }
+            catch (NullReferenceException)
+            {
+            }
+            finally
+            {
+                EnableControls(true);
+            }
         }
 
         private string BuildSpotifyURI(string url)

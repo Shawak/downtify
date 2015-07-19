@@ -5,4 +5,5 @@
     <file_exists>SKIP</file_exists>
     <download>download/</download>
     <cache>cache/</cache>
+    <continue_dl>false</continue_dl>
 </configuration>
