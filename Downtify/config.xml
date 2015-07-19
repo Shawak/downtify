@@ -6,4 +6,5 @@
     <download>download/</download>
     <cache>cache/</cache>
     <continue_dl>false</continue_dl>
+    <update_repo>https://github.com/Shawak/downtify.git</update_repo>
 </configuration>

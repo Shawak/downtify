@@ -17,20 +17,23 @@ namespace DowntifyUpdater
 
         static string Version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
         static string Repo_directory = Environment.CurrentDirectory + "\\repo";
-        static string Git_Remote = "https://github.com/Shawak/downtify.git";
+        static string Git_Remote = null;
         static string Downtify_Executable = "Downtify.exe";
 
         static void Main(string[] args)
         {
             bool forceInstall = false;
-            foreach(string arg in args)
+            XmlConfiguration config = new XmlConfiguration("config.xml");
+            config.LoadConfigurationFile();
+            Git_Remote = config.GetConfiguration("update_repo", "https://github.com/Shawak/downtify.git");
+            for(int iArg = 0; iArg < args.Length; iArg++)
             {
-                if (arg.ToLower().Equals("--dev"))
-                {
-                    Git_Remote = "https://github.com/lordsill/downtify.git";
-                    forceInstall = true;
-                }
-                else if (arg.ToLower().Equals("--force"))
+                if (args[iArg].ToLower().Equals("--git"))
+                    if (iArg != args.Length - 1)
+                        Git_Remote = args[iArg + 1];
+                    else
+                        Console.WriteLine("No update_repo specified.");
+                if (args[iArg].ToLower().Equals("--force"))
                     forceInstall = true;
             }
             if (!File.Exists(Downtify_Executable))
