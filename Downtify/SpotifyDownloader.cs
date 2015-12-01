@@ -66,12 +66,14 @@ namespace Downtify
         Mp3Writer wr;
         SynchronizationContext syncContext;
 
-        static string appPath = AppDomain.CurrentDomain.BaseDirectory;
-        static string tmpPath = appPath + "cache\\";
-        static string downloadPath = appPath + "download\\";
+        string tmpPath;
+        string downloadPath;
 
         public SpotifyDownloader()
         {
+            tmpPath = Downtify.GUI.frmMain.configuration.GetConfiguration("cache", "cache/");
+            downloadPath = Downtify.GUI.frmMain.configuration.GetConfiguration("download", "download/");
+
             if (!Directory.Exists(tmpPath))
                 Directory.CreateDirectory(tmpPath);
 
@@ -386,7 +388,7 @@ namespace Downtify
 
         private DownloadType GetDownloadType()
         {
-            var typeStr = Downtify.GUI.frmMain.configuration.GetConfiguration("file_exists").ToUpper();
+            var typeStr = Downtify.GUI.frmMain.configuration.GetConfiguration("file_exists", "SKIP").ToUpper();
             DownloadType type;
             try
             {

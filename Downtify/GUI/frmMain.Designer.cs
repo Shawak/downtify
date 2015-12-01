@@ -31,7 +31,7 @@
             this.listBoxTracks = new System.Windows.Forms.ListBox();
             this.buttonDownload = new System.Windows.Forms.Button();
             this.textBoxLink = new Downtify.GUI.PlaceholderTextBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar1 = new Downtify.GUI.TextProgressBar();
             this.SuspendLayout();
             // 
             // listBoxTracks
@@ -69,10 +69,13 @@
             // 
             // progressBar1
             // 
+            this.progressBar1.CurrentTrack = 0;
             this.progressBar1.Location = new System.Drawing.Point(12, 241);
             this.progressBar1.Name = "progressBar1";
+            this.progressBar1.ShowText = false;
             this.progressBar1.Size = new System.Drawing.Size(381, 23);
             this.progressBar1.TabIndex = 3;
+            this.progressBar1.TotalTracks = 0;
             // 
             // frmMain
             // 
@@ -88,6 +91,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Downtify";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_Closing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.ResumeLayout(false);
@@ -100,7 +104,7 @@
         private System.Windows.Forms.ListBox listBoxTracks;
         private Downtify.GUI.PlaceholderTextBox textBoxLink;
         private System.Windows.Forms.Button buttonDownload;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private Downtify.GUI.TextProgressBar progressBar1;
     }
 }
 
