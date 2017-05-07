@@ -355,7 +355,7 @@ namespace Downtify
         {
             foreach(var c in new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))
                 filepath = filepath.Replace(c, '_');
-            return filepath;
+            return filepath.Substring(0, 240);
         }
 
         bool canPlay(Track track)
