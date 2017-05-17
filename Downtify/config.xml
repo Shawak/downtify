@@ -3,4 +3,8 @@
     <password>PASSWORD</password>
     <language>en</language>
     <file_exists>SKIP</file_exists>
+    <download>download/</download>
+    <cache>cache/</cache>
+    <continue_dl>false</continue_dl>
+    <update_repo>https://github.com/Shawak/downtify.git</update_repo>
 </configuration>

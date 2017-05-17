@@ -77,11 +77,11 @@
     </Reference>
     <Reference Include="yeti.mmedia, Version=1.0.5245.33655, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\yeti.mmedia.dll</HintPath>
+      <HintPath>Libs\yeti.mmedia.dll</HintPath>
     </Reference>
     <Reference Include="yeti.mp3, Version=1.0.5245.33657, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\yeti.mp3.dll</HintPath>
+      <HintPath>Libs\yeti.mp3.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +90,9 @@
     </Compile>
     <Compile Include="GUI\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\TextProgressBar.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="GUI\PlaceholderTextBox.cs">
       <SubType>Component</SubType>
@@ -168,12 +171,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="language/en.xml">
+    <None Include="language\en.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="language/de.xml">
+    <None Include="language\de.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
