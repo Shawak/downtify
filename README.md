@@ -5,7 +5,7 @@ playlists directly from spotify.
 
 ### Usage
 
-To use downtify, you just simple need enter any spotify premium account into the `config.txt`.
+To use downtify, you just simple need enter any spotify premium account into the `config.xml`.
 
 ### Downloading
 
