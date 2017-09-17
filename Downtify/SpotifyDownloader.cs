@@ -1,5 +1,4 @@
-﻿using HundredMilesSoftware.UltraID3Lib;
-using SpotifySharp;
+﻿using SpotifySharp;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -250,25 +249,36 @@ namespace Downtify
                 File.Delete(fileName);
             File.Move("downloading", fileName);
 
-            // Tag
-            var u = new UltraID3();
-            u.Read(fileName);
-            u.Artist = GetTrackArtistsNames(downloadingTrack);
-            u.Title = downloadingTrack.Name();
-            u.Album = downloadingTrack.Album().Name();
-            u.TrackNum = (short)downloadingTrack.Index();
+            // Tags
+            var file = TagLib.File.Create(fileName);
+            file.Tag.Title = downloadingTrack.Name();
+            file.Tag.Performers = new[] { GetTrackArtistsNames(downloadingTrack) };
+            file.Tag.Disc = (uint)downloadingTrack.Disc();
+            file.Tag.Year = (uint)downloadingTrack.Album().Year();
+            file.Tag.Track = (uint)downloadingTrack.Index();
+            file.Tag.Album = downloadingTrack.Album().Name();
+            file.Tag.Comment = Link.CreateFromTrack(downloadingTrack, 0).AsString();
 
+            // Download img
             var imageID = downloadingTrack.Album().Cover(ImageSize.Large);
             var image = SpotifySharp.Image.Create(session, imageID);
             await WaitForBool(image.IsLoaded);
-
             var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
             var bmp = (Bitmap)tc.ConvertFrom(image.Data());
 
-            var pictureFrame = new ID3v23PictureFrame(bmp, PictureTypes.CoverFront, "image", TextEncodingTypes.ISO88591);
-            u.ID3v2Tag.Frames.Add(pictureFrame);
+            // Set img
+            TagLib.Picture pic = new TagLib.Picture();
+            pic.Type = TagLib.PictureType.FrontCover;
+            pic.Description = "Cover";
+            pic.MimeType = System.Net.Mime.MediaTypeNames.Image.Jpeg;
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            ms.Position = 0;
+            pic.Data = TagLib.ByteVector.FromStream(ms);
+            file.Tag.Pictures = new TagLib.IPicture[] { pic };
 
-            u.Write();
+            // Save
+            file.Save();
 
             base.EndOfTrack(session);
 
@@ -296,6 +306,7 @@ namespace Downtify
             await WaitForBool(playlist.IsLoaded);
             for (int i = 0; i < playlist.NumTracks(); i++)
                 await WaitForBool(playlist.Track(i).IsLoaded);
+
             return playlist;
         }
 

@@ -65,6 +65,7 @@
             this.textBoxLink.Placeholder = "Put your track or playlist link here";
             this.textBoxLink.Size = new System.Drawing.Size(493, 22);
             this.textBoxLink.TabIndex = 1;
+            this.textBoxLink.Text = "spotify:user:matthewrobinson132:playlist:1BFnshJ43q1oObsZQ6Hj0N";
             this.textBoxLink.TextChanged += new System.EventHandler(this.textBoxLink_TextChanged);
             // 
             // progressBar1
