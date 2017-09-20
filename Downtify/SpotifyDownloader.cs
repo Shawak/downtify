@@ -1,9 +1,11 @@
-﻿using SpotifySharp;
+﻿using System.Diagnostics;
+using SpotifySharp;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using WaveLib;
@@ -50,15 +52,21 @@ namespace Downtify
 
         // TODO: Make these become "real events"
         public delegate void OnLoginHandler(bool isLoggedIn);
+
         public event OnLoginHandler OnLoginResult;
 
         public delegate void OnDownloadProgressHandler(int value);
+
         public event OnDownloadProgressHandler OnDownloadProgress;
 
         public delegate void OnDownloadCompleteHandler(bool successfully);
+
         public event OnDownloadCompleteHandler OnDownloadComplete;
 
-        public bool Loaded { get { return session.User().IsLoaded(); } }
+        public bool Loaded
+        {
+            get { return session.User().IsLoaded(); }
+        }
 
         SpotifySession session;
         Track downloadingTrack;
@@ -216,7 +224,7 @@ namespace Downtify
                 // so far 46.4 is used to calculate the process
                 // but there should be a way to calculate this
                 // with the given variables
-                var process = (int)Math.Round((double)100 / duration * (46.4 * counter), 0);
+                var process = (int) Math.Round((double) 100 / duration * (46.4 * counter), 0);
                 OnDownloadProgress(process);
             }
 
@@ -245,17 +253,17 @@ namespace Downtify
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
-            if(GetDownloadType() == DownloadType.OVERWRITE && File.Exists(fileName))
+            if (GetDownloadType() == DownloadType.OVERWRITE && File.Exists(fileName))
                 File.Delete(fileName);
             File.Move("downloading", fileName);
 
             // Tags
             var file = TagLib.File.Create(fileName);
             file.Tag.Title = downloadingTrack.Name();
-            file.Tag.Performers = new[] { GetTrackArtistsNames(downloadingTrack) };
-            file.Tag.Disc = (uint)downloadingTrack.Disc();
-            file.Tag.Year = (uint)downloadingTrack.Album().Year();
-            file.Tag.Track = (uint)downloadingTrack.Index();
+            file.Tag.Performers = new[] {GetTrackArtistsNames(downloadingTrack)};
+            file.Tag.Disc = (uint) downloadingTrack.Disc();
+            file.Tag.Year = (uint) downloadingTrack.Album().Year();
+            file.Tag.Track = (uint) downloadingTrack.Index();
             file.Tag.Album = downloadingTrack.Album().Name();
             file.Tag.Comment = Link.CreateFromTrack(downloadingTrack, 0).AsString();
 
@@ -264,7 +272,7 @@ namespace Downtify
             var image = SpotifySharp.Image.Create(session, imageID);
             await WaitForBool(image.IsLoaded);
             var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-            var bmp = (Bitmap)tc.ConvertFrom(image.Data());
+            var bmp = (Bitmap) tc.ConvertFrom(image.Data());
 
             // Set img
             TagLib.Picture pic = new TagLib.Picture();
@@ -275,7 +283,7 @@ namespace Downtify
             bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
             ms.Position = 0;
             pic.Data = TagLib.ByteVector.FromStream(ms);
-            file.Tag.Pictures = new TagLib.IPicture[] { pic };
+            file.Tag.Pictures = new TagLib.IPicture[] {pic};
 
             // Save
             file.Save();
@@ -294,7 +302,10 @@ namespace Downtify
         {
             await Task.Factory.StartNew(() =>
             {
-                while (!action()) { };
+                while (!action())
+                {
+                }
+                ;
             });
             return true;
         }
@@ -319,12 +330,13 @@ namespace Downtify
                 await WaitForBool(album.Track(i).IsLoaded);
             return album;
         }
-        
+
         public async Task<Track> FetchTrack(string linkStr)
         {
             var link = Link.CreateFromString(linkStr);
             var track = link.AsTrack();
             await WaitForBool(track.IsLoaded);
+
             return track;
         }
 
@@ -364,7 +376,7 @@ namespace Downtify
 
         string escape(string filepath)
         {
-            foreach(var c in new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))
+            foreach (var c in new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))
                 filepath = filepath.Replace(c, '_');
             return filepath.Substring(0, filepath.Length < 100 ? filepath.Length : 100);
         }
@@ -401,13 +413,50 @@ namespace Downtify
             DownloadType type;
             try
             {
-                type = (DownloadType)Enum.Parse(typeof(DownloadType), typeStr);
+                type = (DownloadType) Enum.Parse(typeof(DownloadType), typeStr);
             }
             catch (Exception e)
             {
                 type = DownloadType.SKIP;
             }
             return type;
+        }
+
+
+        public static bool IsSpotifyUrl(string str)
+        {
+            return (IsSpotifyTrackAlbumUrl(str) || IsSpotifyPlaylistUrl(str));
+        }
+
+        public static bool IsSpotifyPlaylistUrl(string str)
+        {
+            return (new Regex(@"(https|http)://open.spotify.com/user/([A-Za-z]|[0-9]|_)*/playlist/([A-Za-z]|[0-9]|_)*")).Matches(str).Count != 0;
+        }
+
+        public static bool IsSpotifyTrackAlbumUrl(string str)
+        {
+            return (new Regex(@"(https|http)://open.spotify.com/(album|track)/([A-Za-z]|[0-9]|_)*")).Matches(str).Count != 0;
+        }
+
+        public static string SpotifyUrlToUri(string url)
+        {
+            if (url == null)
+                return null;
+
+            var elements = url.Split('/');
+
+            if (IsSpotifyPlaylistUrl(url))
+            {
+                return "spotify:user:" + elements[4] + ":playlist:" + elements[6];
+            }
+
+            if (IsSpotifyTrackAlbumUrl(url))
+            {
+                return "spotify:" + elements[3] + ":" + elements[4];
+            }
+
+
+            return url;
         }
     }
 }

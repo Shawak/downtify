@@ -123,35 +123,37 @@ namespace Downtify.GUI
 
         private async  void textBoxLink_TextChanged(object sender, EventArgs e)
         {
-            var link = textBoxLink.Text;
+            var link = SpotifyDownloader.SpotifyUrlToUri(textBoxLink.Text);
+
             try
             {
                 EnableControls(false);
                 
                 //Validate pasted URI
-                if(link.Length > 0 && !link.ToLower().StartsWith("spotify:"))
+                if((link.Length > 0 && !link.ToLower().StartsWith("spotify:")))
                 {
                     MessageBox.Show(lang.GetString("download/invalid_uri"));
                     textBoxLink.Clear();
                     return;
                 }
 
+
                 if (link.ToLower().Contains("playlist"))
                 {
-                    var playlist = await downloader.FetchPlaylist(textBoxLink.Text);
+                    var playlist = await downloader.FetchPlaylist(link);
                     for (int i = 0; i < playlist.NumTracks(); i++)
                         listBoxTracks.Items.Add(new TrackItem(playlist.Track(i)));
                     textBoxLink.Clear();
                 }
                 else if (link.ToLower().Contains("track"))
                 {
-                    var track = await downloader.FetchTrack(textBoxLink.Text);
+                    var track = await downloader.FetchTrack(link);
                     listBoxTracks.Items.Add(new TrackItem(track));
                     textBoxLink.Clear();
                 }
                 else if(link.ToLower().Contains("album"))
                 {
-                    var album = await downloader.FetchAlbum(textBoxLink.Text);
+                    var album = await downloader.FetchAlbum(link);
                     for (int i = 0; i < album.NumTracks(); i++)
                         listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
                     textBoxLink.Clear();

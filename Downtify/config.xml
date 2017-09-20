@@ -1,6 +1,6 @@
 <configuration>
-    <username>matthewrobinson132@gmail.com</username>
-    <password>l3g3ndry</password>
+    <username>username</username>
+    <password>password</password>
     <language>en</language>
     <file_exists>SKIP</file_exists>
 </configuration>
