@@ -1,6 +1,6 @@
 <configuration>
-    <username>username</username>
-    <password>password</password>
-    <language>en</language>
-    <file_exists>SKIP</file_exists>
+  <username>username</username>
+  <password>password</password>
+  <language>en</language>
+  <file_exists>SKIP</file_exists>
 </configuration>

@@ -1,11 +1,16 @@
-﻿namespace Downtify.GUI
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace Downtify.GUI
 {
     partial class frmMain
     {
         /// <summary>
         /// Erforderliche Designervariable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Verwendete Ressourcen bereinigen.
@@ -32,6 +37,16 @@
             this.buttonDownload = new System.Windows.Forms.Button();
             this.textBoxLink = new Downtify.GUI.PlaceholderTextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.pictureBoxAlbumCover = new System.Windows.Forms.PictureBox();
+            this.labelTite = new System.Windows.Forms.Label();
+            this.labelAlbum = new System.Windows.Forms.Label();
+            this.labelArtist = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.statusStripMain = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelMain = new System.Windows.Forms.ToolStripStatusLabel();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbumCover)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.statusStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // listBoxTracks
@@ -41,9 +56,10 @@
             this.listBoxTracks.ItemHeight = 16;
             this.listBoxTracks.Location = new System.Drawing.Point(11, 40);
             this.listBoxTracks.Name = "listBoxTracks";
-            this.listBoxTracks.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBoxTracks.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.listBoxTracks.Size = new System.Drawing.Size(494, 196);
             this.listBoxTracks.TabIndex = 0;
+            this.listBoxTracks.SelectedIndexChanged += new System.EventHandler(this.listBoxTracks_SelectedIndexChanged);
             this.listBoxTracks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxTracks_KeyDown);
             // 
             // buttonDownload
@@ -65,7 +81,8 @@
             this.textBoxLink.Placeholder = "Put your track or playlist link here";
             this.textBoxLink.Size = new System.Drawing.Size(493, 22);
             this.textBoxLink.TabIndex = 1;
-            this.textBoxLink.TextChanged += new System.EventHandler(this.textBoxLink_TextChanged);
+            this.textBoxLink.Text = "https://open.spotify.com/user/matthewrobinson132/playlist/1BFnshJ43q1oObsZQ6Hj0N";
+            this.textBoxLink.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxLink_KeyPress);
             // 
             // progressBar1
             // 
@@ -74,11 +91,87 @@
             this.progressBar1.Size = new System.Drawing.Size(381, 23);
             this.progressBar1.TabIndex = 3;
             // 
+            // pictureBoxAlbumCover
+            // 
+            this.pictureBoxAlbumCover.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pictureBoxAlbumCover.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.pictureBoxAlbumCover.Location = new System.Drawing.Point(39, 19);
+            this.pictureBoxAlbumCover.Name = "pictureBoxAlbumCover";
+            this.pictureBoxAlbumCover.Size = new System.Drawing.Size(150, 150);
+            this.pictureBoxAlbumCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxAlbumCover.TabIndex = 4;
+            this.pictureBoxAlbumCover.TabStop = false;
+            // 
+            // labelTite
+            // 
+            this.labelTite.AutoEllipsis = true;
+            this.labelTite.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.labelTite.Location = new System.Drawing.Point(5, 179);
+            this.labelTite.Name = "labelTite";
+            this.labelTite.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.labelTite.Size = new System.Drawing.Size(221, 15);
+            this.labelTite.TabIndex = 6;
+            this.labelTite.Text = "Title";
+            this.labelTite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelAlbum
+            // 
+            this.labelAlbum.AutoEllipsis = true;
+            this.labelAlbum.Location = new System.Drawing.Point(3, 205);
+            this.labelAlbum.Name = "labelAlbum";
+            this.labelAlbum.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.labelAlbum.Size = new System.Drawing.Size(223, 19);
+            this.labelAlbum.TabIndex = 7;
+            this.labelAlbum.Text = "Album";
+            this.labelAlbum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelArtist
+            // 
+            this.labelArtist.AutoEllipsis = true;
+            this.labelArtist.Location = new System.Drawing.Point(2, 229);
+            this.labelArtist.Name = "labelArtist";
+            this.labelArtist.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.labelArtist.Size = new System.Drawing.Size(224, 20);
+            this.labelArtist.TabIndex = 7;
+            this.labelArtist.Text = "Artist";
+            this.labelArtist.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.pictureBoxAlbumCover);
+            this.groupBox1.Controls.Add(this.labelArtist);
+            this.groupBox1.Controls.Add(this.labelTite);
+            this.groupBox1.Controls.Add(this.labelAlbum);
+            this.groupBox1.Location = new System.Drawing.Point(524, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(228, 252);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Selected Track";
+            // 
+            // statusStripMain
+            // 
+            this.statusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelMain});
+            this.statusStripMain.Location = new System.Drawing.Point(0, 272);
+            this.statusStripMain.Name = "statusStripMain";
+            this.statusStripMain.Size = new System.Drawing.Size(759, 22);
+            this.statusStripMain.TabIndex = 9;
+            this.statusStripMain.Text = "Ready";
+            // 
+            // toolStripStatusLabelMain
+            // 
+            this.toolStripStatusLabelMain.Name = "toolStripStatusLabelMain";
+            this.toolStripStatusLabelMain.Size = new System.Drawing.Size(39, 17);
+            this.toolStripStatusLabelMain.Text = "Ready";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(517, 275);
+            this.ClientSize = new System.Drawing.Size(759, 294);
+            this.Controls.Add(this.statusStripMain);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonDownload);
             this.Controls.Add(this.textBoxLink);
@@ -90,6 +183,10 @@
             this.Text = "Downtify";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Shown += new System.EventHandler(this.frmMain_Shown);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbumCover)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.statusStripMain.ResumeLayout(false);
+            this.statusStripMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -97,10 +194,17 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBoxTracks;
-        private Downtify.GUI.PlaceholderTextBox textBoxLink;
-        private System.Windows.Forms.Button buttonDownload;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private ListBox listBoxTracks;
+        private PlaceholderTextBox textBoxLink;
+        private Button buttonDownload;
+        private ProgressBar progressBar1;
+        private PictureBox pictureBoxAlbumCover;
+        private Label labelTite;
+        private Label labelAlbum;
+        private Label labelArtist;
+        private GroupBox groupBox1;
+        private StatusStrip statusStripMain;
+        private ToolStripStatusLabel toolStripStatusLabelMain;
     }
 }
 

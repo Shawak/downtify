@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using SpotifySharp;
 using System;
+using System.CodeDom;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -73,23 +74,26 @@ namespace Downtify
         Mp3Writer wr;
         SynchronizationContext syncContext;
 
-        static string appPath = AppDomain.CurrentDomain.BaseDirectory;
-        static string tmpPath = appPath + "cache\\";
-        static string downloadPath = appPath + "download\\";
+        static string _appPath = AppDomain.CurrentDomain.BaseDirectory;
+        static string _tmpPath = _appPath + "cache\\";
+        static string _downloadPath = _appPath + "download\\";
+
+
+        int _counter;
 
         public SpotifyDownloader()
         {
-            if (!Directory.Exists(tmpPath))
-                Directory.CreateDirectory(tmpPath);
+            if (!Directory.Exists(_tmpPath))
+                Directory.CreateDirectory(_tmpPath);
 
-            if (!Directory.Exists(downloadPath))
-                Directory.CreateDirectory(downloadPath);
+            if (!Directory.Exists(_downloadPath))
+                Directory.CreateDirectory(_downloadPath);
 
             var config = new SpotifySessionConfig()
             {
                 ApiVersion = 12,
-                CacheLocation = tmpPath,
-                SettingsLocation = tmpPath,
+                CacheLocation = _tmpPath,
+                SettingsLocation = _tmpPath,
                 ApplicationKey = File.ReadAllBytes("spotify_appkey.key"),
                 UserAgent = "downtify",
                 Listener = this
@@ -203,8 +207,6 @@ namespace Downtify
             base.GetAudioBufferStats(session, out stats);
         }
 
-        int counter;
-
         public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
         {
             if (num_frames == 0)
@@ -218,13 +220,13 @@ namespace Downtify
 
             if (OnDownloadProgress != null)
             {
-                counter++;
+                _counter++;
                 var duration = downloadingTrack.Duration();
                 // Todo: Find out how to calculate this correctly,
                 // so far 46.4 is used to calculate the process
                 // but there should be a way to calculate this
                 // with the given variables
-                var process = (int) Math.Round((double) 100 / duration * (46.4 * counter), 0);
+                var process = (int) Math.Round((double) 100 / duration * (46.4 * _counter), 0);
                 OnDownloadProgress(process);
             }
 
@@ -249,7 +251,7 @@ namespace Downtify
             wr.Close();
 
             // Move File
-            var dir = downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
+            var dir = _downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
@@ -349,10 +351,10 @@ namespace Downtify
                 return;
             }
 
-            counter = 0;
+            _counter = 0;
             downloadingTrack = track;
 
-            var dir = downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
+            var dir = _downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
             var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
             if (GetDownloadType() == DownloadType.SKIP && File.Exists(fileName))
             {
@@ -422,7 +424,6 @@ namespace Downtify
             return type;
         }
 
-
         public static bool IsSpotifyUrl(string str)
         {
             return (IsSpotifyTrackAlbumUrl(str) || IsSpotifyPlaylistUrl(str));
@@ -457,6 +458,28 @@ namespace Downtify
 
 
             return url;
+        }
+
+        public async Task<string> GetImageOfUrl(Track track, ImageSize size)
+        {
+            // Download img
+            var imageID = track.Album().Cover(size);
+            var image = SpotifySharp.Image.Create(session, imageID);
+            await WaitForBool(image.IsLoaded);
+
+            var link = Link.CreateFromImage(image);
+            return link.AsString();
+
+        }
+
+        public async Task<Bitmap> DownloadImage(Track track)
+        {
+            var imageID = track.Album().Cover(ImageSize.Large);
+            var image = SpotifySharp.Image.Create(session, imageID);
+            await WaitForBool(image.IsLoaded);
+            var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
+            return (Bitmap)tc.ConvertFrom(image.Data());
+
         }
     }
 }

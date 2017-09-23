@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using SpotifySharp;
 
 namespace Downtify.GUI
 {
     public partial class frmMain : Form
     {
+        public const string NoText = "-";
+        public const string StatusTextReady = "Ready";
+        public const string StatusTextInvalidLink = "Invalid Spotify link";
+        public const string StatusTextUpdatingTrackInfo = "Updating track info...";
+
         SpotifyDownloader downloader;
         public static XmlConfiguration configuration;
         public static LanguageXML lang;
@@ -62,8 +71,10 @@ namespace Downtify.GUI
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(200);
+            Thread.Sleep(200);
             this.Activate();
+
+            ClearTrackInfo();
 
             // very ugly, use config parser (json for example) would be nicer
             string username = "", password = "";
@@ -121,21 +132,22 @@ namespace Downtify.GUI
                 ((Control)control).Enabled = enable;
         }
 
-        private async  void textBoxLink_TextChanged(object sender, EventArgs e)
+        private async Task FetchSongsFromUrl(string url)
         {
-            var link = SpotifyDownloader.SpotifyUrlToUri(textBoxLink.Text);
+            var link = SpotifyDownloader.SpotifyUrlToUri(url);
 
             try
             {
                 EnableControls(false);
-                
+
                 //Validate pasted URI
-                if((link.Length > 0 && !link.ToLower().StartsWith("spotify:")))
-                {
-                    MessageBox.Show(lang.GetString("download/invalid_uri"));
-                    textBoxLink.Clear();
-                    return;
-                }
+                //                if((link.Length > 0 && !link.ToLower().StartsWith("spotify:")))
+                //                {
+                //                    MessageBox.Show(lang.GetString("download/invalid_uri"));
+                //                    textBoxLink.Clear();
+                //                    SetStatusStripLabelText(StatusTextInvalidLink);
+                //                    return;
+                //                }
 
 
                 if (link.ToLower().Contains("playlist"))
@@ -151,16 +163,19 @@ namespace Downtify.GUI
                     listBoxTracks.Items.Add(new TrackItem(track));
                     textBoxLink.Clear();
                 }
-                else if(link.ToLower().Contains("album"))
+                else if (link.ToLower().Contains("album"))
                 {
                     var album = await downloader.FetchAlbum(link);
                     for (int i = 0; i < album.NumTracks(); i++)
                         listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
                     textBoxLink.Clear();
                 }
+
+                SetStatusStripLabelText(StatusTextReady);
             }
             catch (NullReferenceException)
             {
+                SetStatusStripLabelText(StatusTextInvalidLink);
             }
             finally
             {
@@ -170,6 +185,9 @@ namespace Downtify.GUI
 
         private void listBoxTracks_KeyDown(object sender, KeyEventArgs e)
         {
+
+            ClearTrackInfo();
+
             if (e.KeyCode == Keys.Delete)
             {
                 if (listBoxTracks.SelectedItems.Count == 0)
@@ -202,6 +220,51 @@ namespace Downtify.GUI
 
             EnableControls(false);
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
+        }
+
+        private async void listBoxTracks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxTracks.SelectedItem == null)
+            {
+                SetStatusStripLabelText(StatusTextReady);
+                return;
+            }
+
+            SetStatusStripLabelText(StatusTextUpdatingTrackInfo);
+            var track = ((TrackItem)listBoxTracks.SelectedItem).Track;
+            var bmp = await Task.Run(() => downloader.DownloadImage(track));
+            UpdateTrackInfo(track, bmp);
+            SetStatusStripLabelText(StatusTextReady);
+
+        }
+
+        private void UpdateTrackInfo(Track track, Bitmap bmp)
+        {
+            pictureBoxAlbumCover.Image = bmp;
+            labelTite.Text = track.Name();
+            labelAlbum.Text = track.Album().Name();
+            labelArtist.Text = SpotifyDownloader.GetTrackArtistsNames(track);
+        }
+
+        private void ClearTrackInfo()
+        {
+            pictureBoxAlbumCover.Image = null;
+            labelTite.Text = NoText;
+            labelAlbum.Text = NoText;
+            labelArtist.Text = NoText;
+        }
+
+        private void SetStatusStripLabelText(string test)
+        {
+            toolStripStatusLabelMain.Text = test;
+        }
+
+        private async void textBoxLink_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char) Keys.Enter)
+            {
+                await FetchSongsFromUrl(textBoxLink.Text);
+            }
         }
     }
 }
