@@ -123,7 +123,16 @@ namespace Downtify.GUI
 
         private async  void textBoxLink_TextChanged(object sender, EventArgs e)
         {
-            var link = textBoxLink.Text;
+            var link = string.Empty;
+            if (textBoxLink.Text.Contains("spotify.com"))
+            {
+                link = ConvertToURI(textBoxLink.Text);
+            }
+            else
+            {
+                link = textBoxLink.Text;
+            }
+
             try
             {
                 EnableControls(false);
@@ -200,6 +209,15 @@ namespace Downtify.GUI
 
             EnableControls(false);
             downloader.Download(((TrackItem)listBoxTracks.SelectedItems[0]).Track);
+        }
+
+        private string ConvertToURI(string url)
+        {
+            string[] splitted = url.Split(new string[] { "spotify.com" }, StringSplitOptions.None);
+            string uri = "spotify" + splitted[1];
+            uri = uri.Replace("/", ":");
+
+            return uri;
         }
     }
 }
