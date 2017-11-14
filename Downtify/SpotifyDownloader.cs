@@ -257,6 +257,7 @@ namespace Downtify
             u.Title = downloadingTrack.Name();
             u.Album = downloadingTrack.Album().Name();
             u.TrackNum = (short)downloadingTrack.Index();
+            u.Year = (short)downloadingTrack.Album().Year();
 
             var imageID = downloadingTrack.Album().Cover(ImageSize.Large);
             var image = SpotifySharp.Image.Create(session, imageID);
