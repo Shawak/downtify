@@ -33,7 +33,7 @@ namespace Downtify
             }
             catch (XPathException e)
             {
-                return "Missing Language String: " + key;
+                return "Missing Language String: " + key + ":" + e.Message;
             }
         }
 

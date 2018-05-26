@@ -1,21 +1,25 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpotifySharp;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Downtify.GUI
 {
     public partial class frmMain : Form
     {
         public const string NoText = "-";
-        public const string StatusTextReady = "Ready";
+        public const string StatusTextReady = "";
         public const string StatusTextInvalidLink = "Invalid Spotify link";
         public const string StatusTextUpdatingTrackInfo = "Updating track info...";
 
         SpotifyDownloader downloader;
+        private long _totalDuration = 0;
         public static XmlConfiguration configuration;
         public static LanguageXML lang;
 
@@ -60,7 +64,7 @@ namespace Downtify.GUI
                 if (value > 100 || value < 0)
                     return;
 
-                 progressBar1.Value = value;
+                progressBar1.Value = value;
             });
         }
 
@@ -91,10 +95,10 @@ namespace Downtify.GUI
 
         private void TransferConfig()
         {
-            if(File.Exists("config.txt"))
+            if (File.Exists("config.txt"))
             {
                 string username = "", password = "";
-                foreach(var currentLine in File.ReadAllLines("config.txt"))
+                foreach (var currentLine in File.ReadAllLines("config.txt"))
                 {
                     var line = currentLine.Trim();
                     if (line.StartsWith("#"))
@@ -132,54 +136,64 @@ namespace Downtify.GUI
                 ((Control)control).Enabled = enable;
         }
 
-        private async Task FetchSongsFromUrl(string url)
+        private async Task FetchSongsFromUrl(string text)
         {
-            var link = SpotifyDownloader.SpotifyUrlToUri(url);
 
-            try
-            {
-                EnableControls(false);
+            string[] urls = text.Split('\n');
 
-                //Validate pasted URI
-                //                if((link.Length > 0 && !link.ToLower().StartsWith("spotify:")))
-                //                {
-                //                    MessageBox.Show(lang.GetString("download/invalid_uri"));
-                //                    textBoxLink.Clear();
-                //                    SetStatusStripLabelText(StatusTextInvalidLink);
-                //                    return;
-                //                }
+            foreach (string url in urls) {
 
+                var link = SpotifyDownloader.SpotifyUrlToUri(url);
 
-                if (link.ToLower().Contains("playlist"))
+                try
                 {
-                    var playlist = await downloader.FetchPlaylist(link);
-                    for (int i = 0; i < playlist.NumTracks(); i++)
-                        listBoxTracks.Items.Add(new TrackItem(playlist.Track(i)));
-                    textBoxLink.Clear();
-                }
-                else if (link.ToLower().Contains("track"))
-                {
-                    var track = await downloader.FetchTrack(link);
-                    listBoxTracks.Items.Add(new TrackItem(track));
-                    textBoxLink.Clear();
-                }
-                else if (link.ToLower().Contains("album"))
-                {
-                    var album = await downloader.FetchAlbum(link);
-                    for (int i = 0; i < album.NumTracks(); i++)
-                        listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
-                    textBoxLink.Clear();
-                }
+                    EnableControls(false);
 
-                SetStatusStripLabelText(StatusTextReady);
-            }
-            catch (NullReferenceException)
-            {
-                SetStatusStripLabelText(StatusTextInvalidLink);
-            }
-            finally
-            {
-                EnableControls(true);
+                    //Validate pasted URI
+                    //                if((link.Length > 0 && !link.ToLower().StartsWith("spotify:")))
+                    //                {
+                    //                    MessageBox.Show(lang.GetString("download/invalid_uri"));
+                    //                    textBoxLink.Clear();
+                    //                    SetStatusStripLabelText(StatusTextInvalidLink);
+                    //                    return;
+                    //                }
+
+                    SetStatusStripLabelText(StatusTextReady);
+
+                    if (link.ToLower().Contains("playlist"))
+                    {
+                        var playlist = await downloader.FetchPlaylist(link);
+                        for (int i = 0; i < playlist.NumTracks(); i++)
+                            listBoxTracks.Items.Add(new TrackItem(playlist.Track(i)));
+                        int a = playlist.NumTracks();
+                        textBoxLink.Clear();
+                    }
+                    else if (link.ToLower().Contains("track"))
+                    {
+                        var track = await downloader.FetchTrack(link);
+                        listBoxTracks.Items.Add(new TrackItem(track));
+                        textBoxLink.Clear();
+                    }
+                    else if (link.ToLower().Contains("album"))
+                    {
+                        var album = await downloader.FetchAlbum(link);
+                        for (int i = 0; i < album.NumTracks(); i++)
+                            listBoxTracks.Items.Add(new TrackItem(album.Track(i)));
+                        textBoxLink.Clear();
+                    }
+                    else
+                    {
+                        SetStatusStripLabelText(StatusTextInvalidLink);
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    SetStatusStripLabelText(StatusTextInvalidLink);
+                }
+                finally
+                {
+                    EnableControls(true);
+                }
             }
         }
 
@@ -224,16 +238,32 @@ namespace Downtify.GUI
 
         private async void listBoxTracks_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _totalDuration = 0;
+
             if (listBoxTracks.SelectedItem == null)
             {
+                UpdateTotalDuration();
                 SetStatusStripLabelText(StatusTextReady);
                 return;
             }
 
-            SetStatusStripLabelText(StatusTextUpdatingTrackInfo);
-            var track = ((TrackItem)listBoxTracks.SelectedItem).Track;
-            var bmp = await Task.Run(() => downloader.DownloadImage(track));
-            UpdateTrackInfo(track, bmp);
+            Track track = null;
+            for (var i = 0; i < listBoxTracks.SelectedIndices.Count; i++)
+            {
+                track = ((TrackItem)listBoxTracks.SelectedItems[i]).Track;
+                _totalDuration += track.Duration();
+            }
+
+            UpdateTotalDuration();
+
+            if (toolStripStatusLabelMain.Text != StatusTextUpdatingTrackInfo)
+            {
+                Debug.WriteLine("in listBoxTracks_SelectedIndexChanged");
+                SetStatusStripLabelText(StatusTextUpdatingTrackInfo);
+                //var bmp = await Task.Run(() => downloader.DownloadImage(track));
+                //UpdateTrackInfo(track, bmp);
+            }
+
             SetStatusStripLabelText(StatusTextReady);
 
         }
@@ -261,10 +291,15 @@ namespace Downtify.GUI
 
         private async void textBoxLink_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char) Keys.Enter)
+            if (e.KeyChar == (char)Keys.Enter)
             {
                 await FetchSongsFromUrl(textBoxLink.Text);
             }
+        }
+
+        private void UpdateTotalDuration()
+        {
+            labelDurationTextValue.Text = TimeSpan.FromMilliseconds(_totalDuration).ToString(@"hh\:mm\:ss");
         }
     }
 }

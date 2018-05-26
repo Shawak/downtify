@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using SpotifySharp;
 using System;
-using System.CodeDom;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -21,7 +20,7 @@ namespace Downtify
 
         public TrackItem(Track track)
         {
-            this.Track = track;
+            Track = track;
         }
 
         public override string ToString()
@@ -66,13 +65,13 @@ namespace Downtify
 
         public bool Loaded
         {
-            get { return session.User().IsLoaded(); }
+            get { return _session.User().IsLoaded(); }
         }
 
-        SpotifySession session;
-        Track downloadingTrack;
-        Mp3Writer wr;
-        SynchronizationContext syncContext;
+        SpotifySession _session;
+        Track _downloadingTrack;
+        Mp3Writer _wr;
+        SynchronizationContext _syncContext;
 
         static string _appPath = AppDomain.CurrentDomain.BaseDirectory;
         static string _tmpPath = _appPath + "cache\\";
@@ -99,22 +98,22 @@ namespace Downtify
                 Listener = this
             };
 
-            syncContext = SynchronizationContext.Current;
-            session = SpotifySession.Create(config);
+            _syncContext = SynchronizationContext.Current;
+            _session = SpotifySession.Create(config);
         }
 
         private void InvokeProcessEvents()
         {
-            syncContext.Post(obj =>
+            _syncContext.Post(obj =>
             {
                 int limit = 0;
-                session.ProcessEvents(ref limit);
+                _session.ProcessEvents(ref limit);
             }, null);
         }
 
         public void Login(string username, string password)
         {
-            session.Login(username, password, true, null);
+            _session.Login(username, password, true, null);
         }
 
         public override void NotifyMainThread(SpotifySession session)
@@ -150,8 +149,7 @@ namespace Downtify
         public override void ConnectionstateUpdated(SpotifySession session)
         {
             if (session.Connectionstate() == ConnectionState.LoggedIn)
-                if (OnLoginResult != null)
-                    OnLoginResult(true);
+                OnLoginResult?.Invoke(true);
             Console.WriteLine(session.Connectionstate().ToString());
             base.ConnectionstateUpdated(session);
         }
@@ -207,30 +205,30 @@ namespace Downtify
             base.GetAudioBufferStats(session, out stats);
         }
 
-        public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
+        public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int numFrames)
         {
-            if (num_frames == 0)
+            if (numFrames == 0)
                 return 0;
 
-            var size = num_frames * format.channels * 2;
+            var size = numFrames * format.channels * 2;
             var data = new byte[size];
             Marshal.Copy(frames, data, 0, size);
 
-            wr.Write(data);
+            _wr.Write(data);
 
             if (OnDownloadProgress != null)
             {
                 _counter++;
-                var duration = downloadingTrack.Duration();
+                var duration = _downloadingTrack.Duration();
                 // Todo: Find out how to calculate this correctly,
                 // so far 46.4 is used to calculate the process
                 // but there should be a way to calculate this
                 // with the given variables
-                var process = (int) Math.Round((double) 100 / duration * (46.4 * _counter), 0);
+                var process = (int)Math.Round((double)100 / duration * (46.4 * _counter), 0);
                 OnDownloadProgress(process);
             }
 
-            return num_frames;
+            return numFrames;
             // return base.MusicDelivery(session, format, frames, num_frames);
         }
 
@@ -241,51 +239,54 @@ namespace Downtify
 
         public override void PlayTokenLost(SpotifySession session)
         {
-            System.Windows.Forms.MessageBox.Show(Downtify.GUI.frmMain.lang.GetString("error/connection_lost"));
+            System.Windows.Forms.MessageBox.Show(GUI.frmMain.lang.GetString("error/connection_lost"));
             base.PlayTokenLost(session);
         }
 
         public override async void EndOfTrack(SpotifySession session)
         {
             session.PlayerPlay(false);
-            wr.Close();
+            _wr.Close();
 
             // Move File
-            var dir = _downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
+            var dir = _downloadPath + escape(GetTrackArtistsNames(_downloadingTrack)) + "\\";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
+            var fileName = dir + escape(GetTrackFullName(_downloadingTrack)) + ".mp3";
             if (GetDownloadType() == DownloadType.OVERWRITE && File.Exists(fileName))
                 File.Delete(fileName);
             File.Move("downloading", fileName);
 
             // Tags
             var file = TagLib.File.Create(fileName);
-            file.Tag.Title = downloadingTrack.Name();
-            file.Tag.Performers = new[] {GetTrackArtistsNames(downloadingTrack)};
-            file.Tag.Disc = (uint) downloadingTrack.Disc();
-            file.Tag.Year = (uint) downloadingTrack.Album().Year();
-            file.Tag.Track = (uint) downloadingTrack.Index();
-            file.Tag.Album = downloadingTrack.Album().Name();
-            file.Tag.Comment = Link.CreateFromTrack(downloadingTrack, 0).AsString();
+            file.Tag.Title = _downloadingTrack.Name();
+            file.Tag.Performers = new[] { GetTrackArtistsNames(_downloadingTrack) };
+            file.Tag.Disc = (uint)_downloadingTrack.Disc();
+            file.Tag.Year = (uint)_downloadingTrack.Album().Year();
+            file.Tag.Track = (uint)_downloadingTrack.Index();
+            file.Tag.Album = _downloadingTrack.Album().Name();
+            file.Tag.Comment = Link.CreateFromTrack(_downloadingTrack, 0).AsString();
 
             // Download img
-            var imageID = downloadingTrack.Album().Cover(ImageSize.Large);
+            var imageID = _downloadingTrack.Album().Cover(ImageSize.Large);
             var image = SpotifySharp.Image.Create(session, imageID);
             await WaitForBool(image.IsLoaded);
             var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-            var bmp = (Bitmap) tc.ConvertFrom(image.Data());
+            var bmp = (Bitmap)tc.ConvertFrom(image.Data());
 
             // Set img
-            TagLib.Picture pic = new TagLib.Picture();
+            var pic = new TagLib.Picture();
             pic.Type = TagLib.PictureType.FrontCover;
             pic.Description = "Cover";
             pic.MimeType = System.Net.Mime.MediaTypeNames.Image.Jpeg;
-            MemoryStream ms = new MemoryStream();
-            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-            ms.Position = 0;
-            pic.Data = TagLib.ByteVector.FromStream(ms);
-            file.Tag.Pictures = new TagLib.IPicture[] {pic};
+            var ms = new MemoryStream();
+            if (bmp != null)
+            {
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                ms.Position = 0;
+                pic.Data = TagLib.ByteVector.FromStream(ms);
+                file.Tag.Pictures = new TagLib.IPicture[] { pic };
+            }
 
             // Save
             file.Save();
@@ -307,7 +308,6 @@ namespace Downtify
                 while (!action())
                 {
                 }
-                ;
             });
             return true;
         }
@@ -315,7 +315,7 @@ namespace Downtify
         public async Task<Playlist> FetchPlaylist(string linkStr)
         {
             var link = Link.CreateFromString(linkStr);
-            var playlist = Playlist.Create(session, link);
+            var playlist = Playlist.Create(_session, link);
             await WaitForBool(playlist.IsLoaded);
             for (int i = 0; i < playlist.NumTracks(); i++)
                 await WaitForBool(playlist.Track(i).IsLoaded);
@@ -326,7 +326,7 @@ namespace Downtify
         public async Task<AlbumBrowse> FetchAlbum(string linkStr)
         {
             var link = Link.CreateFromString(linkStr);
-            var album = AlbumBrowse.Create(session, link.AsAlbum(), AlbumBrowseCallBack, session.UserData);
+            var album = AlbumBrowse.Create(_session, link.AsAlbum(), AlbumBrowseCallBack, _session.UserData);
             await WaitForBool(album.IsLoaded);
             for (int i = 0; i < album.NumTracks(); i++)
                 await WaitForBool(album.Track(i).IsLoaded);
@@ -344,7 +344,7 @@ namespace Downtify
 
         public void Download(Track track)
         {
-            if (!canPlay(track))
+            if (!CanPlay(track))
             {
                 if (OnDownloadComplete != null)
                     OnDownloadComplete(false);
@@ -352,10 +352,9 @@ namespace Downtify
             }
 
             _counter = 0;
-            downloadingTrack = track;
-
-            var dir = _downloadPath + escape(downloadingTrack.Album().Name()) + "\\";
-            var fileName = dir + escape(GetTrackFullName(downloadingTrack)) + ".mp3";
+            _downloadingTrack = track;
+            var dir = _downloadPath + escape(GetTrackArtistsNames(_downloadingTrack)) + "\\";
+            var fileName = dir + escape(GetTrackFullName(_downloadingTrack)) + ".mp3";
             if (GetDownloadType() == DownloadType.SKIP && File.Exists(fileName))
             {
                 if (OnDownloadProgress != null)
@@ -369,9 +368,9 @@ namespace Downtify
             var stream = new FileStream("downloading", FileMode.Create);
             var waveFormat = new WaveFormat(44100, 16, 2);
             var beConfig = new BE_CONFIG(waveFormat, 320);
-            wr = new Mp3Writer(stream, waveFormat, beConfig);
-            session.PlayerLoad(track);
-            session.PlayerPlay(true);
+            _wr = new Mp3Writer(stream, waveFormat, beConfig);
+            _session.PlayerLoad(track);
+            _session.PlayerPlay(true);
             if (OnDownloadProgress != null)
                 OnDownloadProgress(0);
         }
@@ -383,13 +382,13 @@ namespace Downtify
             return filepath.Substring(0, filepath.Length < 100 ? filepath.Length : 100);
         }
 
-        bool canPlay(Track track)
+        bool CanPlay(Track track)
         {
             bool ret;
             try
             {
-                session.PlayerLoad(track);
-                session.PlayerPlay(true);
+                _session.PlayerLoad(track);
+                _session.PlayerPlay(true);
                 ret = true;
             }
             catch
@@ -398,8 +397,8 @@ namespace Downtify
             }
             finally
             {
-                session.PlayerPlay(false);
-                session.PlayerUnload();
+                _session.PlayerPlay(false);
+                _session.PlayerUnload();
             }
             return ret;
         }
@@ -411,14 +410,15 @@ namespace Downtify
 
         private DownloadType GetDownloadType()
         {
-            var typeStr = Downtify.GUI.frmMain.configuration.GetConfiguration("file_exists").ToUpper();
+            var typeStr = GUI.frmMain.configuration.GetConfiguration("file_exists").ToUpper();
             DownloadType type;
             try
             {
-                type = (DownloadType) Enum.Parse(typeof(DownloadType), typeStr);
+                type = (DownloadType)Enum.Parse(typeof(DownloadType), typeStr);
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 type = DownloadType.SKIP;
             }
             return type;
@@ -464,7 +464,7 @@ namespace Downtify
         {
             // Download img
             var imageID = track.Album().Cover(size);
-            var image = SpotifySharp.Image.Create(session, imageID);
+            var image = SpotifySharp.Image.Create(_session, imageID);
             await WaitForBool(image.IsLoaded);
 
             var link = Link.CreateFromImage(image);
@@ -475,7 +475,7 @@ namespace Downtify
         public async Task<Bitmap> DownloadImage(Track track)
         {
             var imageID = track.Album().Cover(ImageSize.Large);
-            var image = SpotifySharp.Image.Create(session, imageID);
+            var image = SpotifySharp.Image.Create(_session, imageID);
             await WaitForBool(image.IsLoaded);
             var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
             return (Bitmap)tc.ConvertFrom(image.Data());

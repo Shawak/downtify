@@ -44,6 +44,8 @@ namespace Downtify.GUI
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelMain = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelDurationText = new System.Windows.Forms.Label();
+            this.labelDurationTextValue = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbumCover)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.statusStripMain.SuspendLayout();
@@ -153,7 +155,7 @@ namespace Downtify.GUI
             // 
             this.statusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelMain});
-            this.statusStripMain.Location = new System.Drawing.Point(0, 272);
+            this.statusStripMain.Location = new System.Drawing.Point(0, 321);
             this.statusStripMain.Name = "statusStripMain";
             this.statusStripMain.Size = new System.Drawing.Size(759, 22);
             this.statusStripMain.TabIndex = 9;
@@ -162,14 +164,33 @@ namespace Downtify.GUI
             // toolStripStatusLabelMain
             // 
             this.toolStripStatusLabelMain.Name = "toolStripStatusLabelMain";
-            this.toolStripStatusLabelMain.Size = new System.Drawing.Size(39, 17);
-            this.toolStripStatusLabelMain.Text = "Ready";
+            this.toolStripStatusLabelMain.Size = new System.Drawing.Size(0, 17);
+            // 
+            // labelDurationText
+            // 
+            this.labelDurationText.AutoSize = true;
+            this.labelDurationText.Location = new System.Drawing.Point(12, 285);
+            this.labelDurationText.Name = "labelDurationText";
+            this.labelDurationText.Size = new System.Drawing.Size(128, 13);
+            this.labelDurationText.TabIndex = 10;
+            this.labelDurationText.Text = "Selected Songs Duration:";
+            // 
+            // labelDurationTextValue
+            // 
+            this.labelDurationTextValue.AutoSize = true;
+            this.labelDurationTextValue.Location = new System.Drawing.Point(146, 285);
+            this.labelDurationTextValue.Name = "labelDurationTextValue";
+            this.labelDurationTextValue.Size = new System.Drawing.Size(49, 13);
+            this.labelDurationTextValue.TabIndex = 10;
+            this.labelDurationTextValue.Text = "00:00:00";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(759, 294);
+            this.ClientSize = new System.Drawing.Size(759, 343);
+            this.Controls.Add(this.labelDurationTextValue);
+            this.Controls.Add(this.labelDurationText);
             this.Controls.Add(this.statusStripMain);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.progressBar1);
@@ -205,6 +226,8 @@ namespace Downtify.GUI
         private GroupBox groupBox1;
         private StatusStrip statusStripMain;
         private ToolStripStatusLabel toolStripStatusLabelMain;
+        private Label labelDurationText;
+        private Label labelDurationTextValue;
     }
 }
 
