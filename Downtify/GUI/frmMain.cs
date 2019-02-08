@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using SpotifySharp;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace Downtify.GUI
 {
@@ -240,8 +241,9 @@ namespace Downtify.GUI
         {
             _totalDuration = 0;
 
-            if (listBoxTracks.SelectedItem == null)
+            if (listBoxTracks.SelectedItem == null || listBoxTracks.SelectedIndices.Count > 1)
             {
+                UpdateTrackInfo(null, null);
                 UpdateTotalDuration();
                 SetStatusStripLabelText(StatusTextReady);
                 return;
@@ -260,8 +262,8 @@ namespace Downtify.GUI
             {
                 Debug.WriteLine("in listBoxTracks_SelectedIndexChanged");
                 SetStatusStripLabelText(StatusTextUpdatingTrackInfo);
-                //var bmp = await Task.Run(() => downloader.DownloadImage(track));
-                //UpdateTrackInfo(track, bmp);
+                var bmp = await downloader.DownloadImage(((TrackItem)listBoxTracks.SelectedItem).Track, 1);
+                UpdateTrackInfo(track, bmp);
             }
 
             SetStatusStripLabelText(StatusTextReady);
@@ -270,10 +272,10 @@ namespace Downtify.GUI
 
         private void UpdateTrackInfo(Track track, Bitmap bmp)
         {
-            pictureBoxAlbumCover.Image = bmp;
-            labelTite.Text = track.Name();
-            labelAlbum.Text = track.Album().Name();
-            labelArtist.Text = SpotifyDownloader.GetTrackArtistsNames(track);
+            pictureBoxAlbumCover.Image = track == null ? null : bmp;
+            labelTite.Text = track == null ? "-" : track.Name();
+            labelAlbum.Text = track == null ? "-" : track.Album().Name();
+            labelArtist.Text = track == null ? "-" : SpotifyDownloader.GetTrackArtistsNames(track);
         }
 
         private void ClearTrackInfo()

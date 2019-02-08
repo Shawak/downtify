@@ -76,7 +76,7 @@ namespace Downtify
         Track _downloadingTrack;
         Mp3Writer _wr;
         SynchronizationContext _syncContext;
-        ISpotifyWebApi _spotifyWebApi;
+        public ISpotifyWebApi _spotifyWebApi;
 
         static string _appPath = AppDomain.CurrentDomain.BaseDirectory;
         static string _tmpPath = _appPath + "cache\\";
@@ -287,12 +287,7 @@ namespace Downtify
             file.Tag.Comment = Link.CreateFromTrack(_downloadingTrack, 0).AsString();
 
             // Download img
-            var track = await _spotifyWebApi.Track.GetTrack(SpotifyWebApi.Model.Uri.SpotifyUri.Make(Link.CreateFromTrack(_downloadingTrack, 0).AsString()));
-            var imgUrl = track.Album.Images[0].Url;
-
-            WebClient client = new WebClient();
-            Stream stream = client.OpenRead(imgUrl);
-            Bitmap bmp = new Bitmap(stream);
+            Bitmap bmp = await DownloadImage(_downloadingTrack, 0);
 
 
             // Set img
@@ -434,14 +429,16 @@ namespace Downtify
             {
                 // if it's not the same song (not the same uri), but both songs have the same name
                 if (TagLib.File.Create(fileName + fileExt).Tag.Comment != Link.CreateFromTrack(track, 0).AsString())
+                {
                     do
                     {
                         fileCount++;
                     }
                     while (File.Exists(fileName + "(" + fileCount.ToString() + ")" + fileExt));
 
-                // append counter
-                fileName += fileCount;
+                    // append counter
+                    fileName += "(" + fileCount.ToString() + ")";
+                }
 
             }
 
@@ -518,14 +515,20 @@ namespace Downtify
 
         }
 
-        public async Task<Bitmap> DownloadImage(Track track)
+        public async Task<Bitmap> DownloadImage(Track track, int size)
         {
-            var imageID = track.Album().Cover(ImageSize.Large);
-            var image = SpotifySharp.Image.Create(_session, imageID);
-            await WaitForBool(image.IsLoaded);
-            var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-            return (Bitmap)tc.ConvertFrom(image.Data());
+            if (size < 0 || size > 3)
+            {
+                size = 0;
+            }
 
+            // Download img
+            var trackInto = await _spotifyWebApi.Track.GetTrack(SpotifyWebApi.Model.Uri.SpotifyUri.Make(Link.CreateFromTrack(track, 0).AsString()));
+            var imgUrl = trackInto.Album.Images[size].Url;
+
+            WebClient client = new WebClient();
+            Stream stream = client.OpenRead(imgUrl);
+            return new Bitmap(stream);
         }
     }
 }
