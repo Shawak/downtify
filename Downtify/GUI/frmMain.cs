@@ -241,7 +241,7 @@ namespace Downtify.GUI
         {
             _totalDuration = 0;
 
-            if (listBoxTracks.SelectedItem == null || listBoxTracks.SelectedIndices.Count > 1)
+            if (listBoxTracks.SelectedItem == null)
             {
                 UpdateTrackInfo(null, null);
                 UpdateTotalDuration();
@@ -258,7 +258,7 @@ namespace Downtify.GUI
 
             UpdateTotalDuration();
 
-            if (toolStripStatusLabelMain.Text != StatusTextUpdatingTrackInfo)
+            if (toolStripStatusLabelMain.Text != StatusTextUpdatingTrackInfo && listBoxTracks.SelectedIndices.Count == 1)
             {
                 Debug.WriteLine("in listBoxTracks_SelectedIndexChanged");
                 SetStatusStripLabelText(StatusTextUpdatingTrackInfo);

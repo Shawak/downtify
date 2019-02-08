@@ -15,6 +15,7 @@ using SpotifyWebApi;
 using SpotifyWebApi.Model.Enum;
 using SpotifyWebApi.Auth;
 using System.Net;
+using SpotifyWebApi.Model.Auth;
 
 namespace Downtify
 {
@@ -37,6 +38,65 @@ namespace Downtify
     {
         SKIP,
         OVERWRITE
+    }
+
+    public class SpotifyWeb {
+
+        ISpotifyWebApi _spotifyWebApi;
+        Token _spotifyWebApiToken;
+        string _clientId;
+        string _clientSecret;
+        AuthParameters _authParameters;
+
+
+        public SpotifyWeb(string clientId, string clientSecret)
+        {
+            this._clientId = clientId;
+            this._clientSecret = clientSecret;
+        }
+
+        private AuthParameters getAuthParameters()
+        {
+            return new AuthParameters
+            {
+                ClientId = _clientId,
+                ClientSecret = _clientSecret,
+                Scopes = Scope.All,
+            };
+        }
+
+        private Token GetISpotifyWebApiToken()
+        {
+            return ClientCredentials.GetToken(_authParameters);
+        }
+
+        private ISpotifyWebApi CreatISpotifyWebApi()
+        {
+            return new SpotifyWebApi.SpotifyWebApi(_spotifyWebApiToken);
+        }
+
+        private void RefreshToken(Boolean refreshOnlyIfExpired)
+        {
+            if (!refreshOnlyIfExpired || (refreshOnlyIfExpired && _spotifyWebApiToken.IsExpired)) {
+                _spotifyWebApiToken = SpotifyWebApi.Auth.AuthorizationCode.RefreshToken(_authParameters, _spotifyWebApiToken);
+                _spotifyWebApi = CreatISpotifyWebApi();
+            }
+
+        }
+
+        public void Auth()
+        {
+            // Autenticate _spotifyWebApi
+            _authParameters = getAuthParameters();
+            _spotifyWebApiToken = GetISpotifyWebApiToken();
+            _spotifyWebApi = CreatISpotifyWebApi();
+        }
+
+        public ISpotifyWebApi GetISpotifyWebApi()
+        {
+            RefreshToken(true);
+            return _spotifyWebApi;
+        }
     }
 
     public class SpotifyDownloader : SpotifySessionListener
@@ -76,7 +136,7 @@ namespace Downtify
         Track _downloadingTrack;
         Mp3Writer _wr;
         SynchronizationContext _syncContext;
-        public ISpotifyWebApi _spotifyWebApi;
+        SpotifyWeb _spotifyWeb;
 
         static string _appPath = AppDomain.CurrentDomain.BaseDirectory;
         static string _tmpPath = _appPath + "cache\\";
@@ -136,19 +196,12 @@ namespace Downtify
                 return;
             }
 
-            // Autenticate _spotifyWebApi
-            var _clientId = GUI.frmMain.configuration.GetConfiguration("clientId");
-            var _clientSecret = GUI.frmMain.configuration.GetConfiguration("clientSecret");
+            // Autenticate _spotifyWeb
+            _spotifyWeb = new SpotifyWeb(GUI.frmMain.configuration.GetConfiguration("clientId"), GUI.frmMain.configuration.GetConfiguration("clientSecret"));
+            _spotifyWeb.Auth();
 
-            var token = SpotifyWebApi.Auth.ClientCredentials.GetToken(new AuthParameters
-            {
-                ClientId = _clientId,
-                ClientSecret = _clientSecret,
-                Scopes = Scope.All,
-            });
 
-            _spotifyWebApi = new SpotifyWebApi.SpotifyWebApi(token);
-
+            // SpotifySharp log in
             base.LoggedIn(session, error);
             await WaitForBool(session.User().IsLoaded);
             session.PreferredBitrate(BitRate._320k);
@@ -523,7 +576,7 @@ namespace Downtify
             }
 
             // Download img
-            var trackInto = await _spotifyWebApi.Track.GetTrack(SpotifyWebApi.Model.Uri.SpotifyUri.Make(Link.CreateFromTrack(track, 0).AsString()));
+            var trackInto = await _spotifyWeb.GetISpotifyWebApi().Track.GetTrack(SpotifyWebApi.Model.Uri.SpotifyUri.Make(Link.CreateFromTrack(track, 0).AsString()));
             var imgUrl = trackInto.Album.Images[size].Url;
 
             WebClient client = new WebClient();
