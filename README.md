@@ -9,7 +9,7 @@ This project was forked from [Shawak/downtify](https://github.com/Shawak/downtif
 
 ### Usage
 
-To use downtify,you must edit the `config.txt` file:
+To use downtify, you need to close/download the repo and edit the `config.txt` file:
 ```xml
 <configuration>
   <username>username</username>
