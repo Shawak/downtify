@@ -78,8 +78,15 @@ namespace Downtify
         private void RefreshToken(Boolean refreshOnlyIfExpired)
         {
             if (!refreshOnlyIfExpired || (refreshOnlyIfExpired && _spotifyWebApiToken.IsExpired)) {
-                _spotifyWebApiToken = SpotifyWebApi.Auth.AuthorizationCode.RefreshToken(_authParameters, _spotifyWebApiToken);
-                _spotifyWebApi = CreatISpotifyWebApi();
+
+                //=====================
+                // ValidationException("Refresh token was null or empty!") is always thrown, since string.IsNullOrEmpty(oldToken.RefreshToken) is alwyas true.
+                //_spotifyWebApiToken = SpotifyWebApi.Auth.AuthorizationCode.RefreshToken(_authParameters, _spotifyWebApiToken);
+                //_spotifyWebApi = CreatISpotifyWebApi();
+                //=====================
+
+
+                Auth(); // Always create new token until refreshing is fixed
             }
 
         }
@@ -95,6 +102,14 @@ namespace Downtify
         public ISpotifyWebApi GetISpotifyWebApi()
         {
             RefreshToken(true);
+            return _spotifyWebApi;
+        }
+
+        // forceRefresh = true means that a brand new token must be created.
+        // forceRefresh = false behaves like GetISpotifyWebApi() (no params)
+        public ISpotifyWebApi GetISpotifyWebApi(Boolean forceRefresh)
+        {
+            RefreshToken(!forceRefresh);
             return _spotifyWebApi;
         }
     }
@@ -199,7 +214,6 @@ namespace Downtify
             // Autenticate _spotifyWeb
             _spotifyWeb = new SpotifyWeb(GUI.frmMain.configuration.GetConfiguration("clientId"), GUI.frmMain.configuration.GetConfiguration("clientSecret"));
             _spotifyWeb.Auth();
-
 
             // SpotifySharp log in
             base.LoggedIn(session, error);
