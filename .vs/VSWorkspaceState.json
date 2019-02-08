@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Downtify"
+    "\\Downtify",
+    "\\Downtify\\GUI",
+    "\\Downtify\\Libs"
   ],
-  "SelectedNode": "\\Downtify.sln",
+  "SelectedNode": "\\Downtify\\SpotifyDownloader.cs",
   "PreviewInSolutionExplorer": false
 }

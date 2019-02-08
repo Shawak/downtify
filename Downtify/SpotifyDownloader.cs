@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 using WaveLib;
 using Yeti.Lame;
 using Yeti.MMedia.Mp3;
+using SpotifyWebApi;
+using SpotifyWebApi.Model.Enum;
+using SpotifyWebApi.Auth;
+using System.Net;
 
 namespace Downtify
 {
@@ -72,6 +76,7 @@ namespace Downtify
         Track _downloadingTrack;
         Mp3Writer _wr;
         SynchronizationContext _syncContext;
+        ISpotifyWebApi _spotifyWebApi;
 
         static string _appPath = AppDomain.CurrentDomain.BaseDirectory;
         static string _tmpPath = _appPath + "cache\\";
@@ -130,6 +135,19 @@ namespace Downtify
                     OnLoginResult(false);
                 return;
             }
+
+            // Autenticate _spotifyWebApi
+            var _clientId = GUI.frmMain.configuration.GetConfiguration("clientId");
+            var _clientSecret = GUI.frmMain.configuration.GetConfiguration("clientSecret");
+
+            var token = SpotifyWebApi.Auth.ClientCredentials.GetToken(new AuthParameters
+            {
+                ClientId = _clientId,
+                ClientSecret = _clientSecret,
+                Scopes = Scope.All,
+            });
+
+            _spotifyWebApi = new SpotifyWebApi.SpotifyWebApi(token);
 
             base.LoggedIn(session, error);
             await WaitForBool(session.User().IsLoaded);
@@ -252,7 +270,8 @@ namespace Downtify
             var dir = _downloadPath + escape(GetTrackArtistsNames(_downloadingTrack)) + "\\";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            var fileName = dir + escape(GetTrackFullName(_downloadingTrack)) + ".mp3";
+
+            var fileName = getUpdatedTrackName(_downloadingTrack); ;
             if (GetDownloadType() == DownloadType.OVERWRITE && File.Exists(fileName))
                 File.Delete(fileName);
             File.Move("downloading", fileName);
@@ -268,11 +287,13 @@ namespace Downtify
             file.Tag.Comment = Link.CreateFromTrack(_downloadingTrack, 0).AsString();
 
             // Download img
-            var imageID = _downloadingTrack.Album().Cover(ImageSize.Large);
-            var image = SpotifySharp.Image.Create(session, imageID);
-            await WaitForBool(image.IsLoaded);
-            var tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-            var bmp = (Bitmap)tc.ConvertFrom(image.Data());
+            var track = await _spotifyWebApi.Track.GetTrack(SpotifyWebApi.Model.Uri.SpotifyUri.Make(Link.CreateFromTrack(_downloadingTrack, 0).AsString()));
+            var imgUrl = track.Album.Images[0].Url;
+
+            WebClient client = new WebClient();
+            Stream stream = client.OpenRead(imgUrl);
+            Bitmap bmp = new Bitmap(stream);
+
 
             // Set img
             var pic = new TagLib.Picture();
@@ -351,10 +372,9 @@ namespace Downtify
                 return;
             }
 
-            _counter = 0;
             _downloadingTrack = track;
-            var dir = _downloadPath + escape(GetTrackArtistsNames(_downloadingTrack)) + "\\";
-            var fileName = dir + escape(GetTrackFullName(_downloadingTrack)) + ".mp3";
+            var fileName = getUpdatedTrackName(_downloadingTrack);
+
             if (GetDownloadType() == DownloadType.SKIP && File.Exists(fileName))
             {
                 if (OnDownloadProgress != null)
@@ -401,6 +421,32 @@ namespace Downtify
                 _session.PlayerUnload();
             }
             return ret;
+        }
+
+        private string getUpdatedTrackName(Track track) 
+        {
+            _counter = 0;
+            var dir = _downloadPath + escape(GetTrackArtistsNames(track)) + "\\";
+            var fileExt = ".mp3";
+            var fileName = dir + escape(GetTrackFullName(track));
+            int fileCount = 0;
+            if (File.Exists(fileName + fileExt))
+            {
+                // if it's not the same song (not the same uri), but both songs have the same name
+                if (TagLib.File.Create(fileName + fileExt).Tag.Comment != Link.CreateFromTrack(track, 0).AsString())
+                    do
+                    {
+                        fileCount++;
+                    }
+                    while (File.Exists(fileName + "(" + fileCount.ToString() + ")" + fileExt));
+
+                // append counter
+                fileName += fileCount;
+
+            }
+
+            // append extention
+            return fileName + fileExt;
         }
 
         private void AlbumBrowseCallBack(AlbumBrowse browse, object userdata)

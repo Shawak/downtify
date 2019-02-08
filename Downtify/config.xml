@@ -1,6 +1,8 @@
 <configuration>
-  <username>user</username>
-  <password>pass</password>
+  <username>username</username>
+  <password>password</password>
   <language>en</language>
   <file_exists>SKIP</file_exists>
+  <clientId>clientId</clientId>
+  <clientSecret>clientSecret</clientSecret>
 </configuration>

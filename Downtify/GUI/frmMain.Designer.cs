@@ -83,7 +83,8 @@ namespace Downtify.GUI
             this.textBoxLink.Placeholder = "Put your track or playlist link here";
             this.textBoxLink.Size = new System.Drawing.Size(493, 22);
             this.textBoxLink.TabIndex = 1;
-            this.textBoxLink.Text = "https://open.spotify.com/user/matthewrobinson132/playlist/1BFnshJ43q1oObsZQ6Hj0N";
+            this.textBoxLink.Text = "https://open.spotify.com/track/39dqDqHv63oMoogN6sgITQ\nhttps://open.spotify.com/tr" +
+    "ack/5treNJZ0gCdEO3EcWp9aDu";
             this.textBoxLink.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxLink_KeyPress);
             // 
             // progressBar1

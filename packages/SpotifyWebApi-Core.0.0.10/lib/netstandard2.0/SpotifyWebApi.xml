@@ -1,0 +1,2663 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpotifyWebApi</name>
+    </assembly>
+    <members>
+        <member name="T:SpotifyWebApi.Api.Album.AlbumApi">
+            <inheritdoc cref="T:SpotifyWebApi.Api.BaseApi"/>
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.Album.AlbumApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Album.AlbumApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.Album.AlbumApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Album.AlbumApi.GetAlbum(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Album.AlbumApi.GetAlbums(System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri},System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Album.AlbumApi.GetAlbumTracks(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Api.Album.IAlbumApi">
+            <summary>
+            The album api.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Album.IAlbumApi.GetAlbum(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <summary>
+            Get Spotify catalog information for a single album.
+            </summary>
+            <param name="albumUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the album</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>The retrieved <see cref="T:SpotifyWebApi.Model.FullAlbum"/>.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Album.IAlbumApi.GetAlbums(System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri},System.String)">
+            <summary>
+            Get Spotify catalog information for multiple albums identified by their Spotify URIs.
+            </summary>
+            <param name="albumUris">A list of the Spotify URIs for the albums. Maximum: 20 IDs.</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>The retrieved <see cref="T:SpotifyWebApi.Model.FullAlbum"/>s.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Album.IAlbumApi.GetAlbumTracks(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <summary>
+            Get Spotify catalog information about an album’s tracks. Optional parameters can be used to limit the number of tracks returned.
+            </summary>
+            <param name="albumUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the album</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>The retrieved tracks.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Artist.ArtistApi">
+            <inheritdoc cref="T:SpotifyWebApi.Api.BaseApi"/>
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.Artist.ArtistApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.ArtistApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.Artist.ArtistApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.ArtistApi.GetArtist(SpotifyWebApi.Model.Uri.SpotifyUri)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.ArtistApi.GetArtists(System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri})">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.ArtistApi.GetArtistAlbums(SpotifyWebApi.Model.Uri.SpotifyUri,SpotifyWebApi.Model.Enum.AlbumType,System.String,System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.ArtistApi.GetArtistsTopTracks(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.ArtistApi.GetArtistsRelatedArtists(SpotifyWebApi.Model.Uri.SpotifyUri)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Api.Artist.IArtistApi">
+            <summary>
+            The artist api.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.IArtistApi.GetArtist(SpotifyWebApi.Model.Uri.SpotifyUri)">
+            <summary>
+            Get Spotify catalog information for a single artist identified by their unique Spotify Uri.
+            </summary>
+            <param name="artistUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the artist.</param>
+            <returns>The retrieved Artist.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.IArtistApi.GetArtists(System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri})">
+            <summary>
+            Get Spotify catalog information for several artists based on their Spotify Uris.
+            </summary>
+            <param name="artistUris">A list of the <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the artists. Maximum: 50 IDs.</param>
+            <returns>The retrieved artists.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.IArtistApi.GetArtistAlbums(SpotifyWebApi.Model.Uri.SpotifyUri,SpotifyWebApi.Model.Enum.AlbumType,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get Spotify catalog information about an artist’s albums. Optional parameters can be specified in the parameters to filter the response.
+            </summary>
+            <param name="artistUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the artist.</param>
+            <param name="albumTypes">Optional. A list of <see cref="T:SpotifyWebApi.Model.Enum.AlbumType"/>s that will be used to filter the response. If not supplied, all album types will be returned.
+            Note multiple types can be selected like so: 'AlbumType.Album | AlbumType.AppearsOn'.</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <param name="maxResults">Optional. The maximum results to return, or -1 to retrieve all items.</param>
+            <param name="offset">Optional. The index of the first album to return. Default: 0 (i.e., the first album).</param>
+            <returns>The artists albums.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.IArtistApi.GetArtistsTopTracks(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <summary>
+            Get Spotify catalog information about an artist’s top tracks by country.
+            </summary>
+            <param name="artistUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the artist.</param>
+            <param name="market">An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>The artists top track by country.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Artist.IArtistApi.GetArtistsRelatedArtists(SpotifyWebApi.Model.Uri.SpotifyUri)">
+            <summary>
+            Get Spotify catalog information about artists similar to a given artist. Similarity is based on analysis of the Spotify community’s listening history.
+            </summary>
+            <param name="artistUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the artist.</param>
+            <returns>The related artists for the specified <paramref name="artistUri"/>.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.BaseApi">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.BaseApi"/> used for all the other APIs.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Api.BaseApi.BaseUri">
+            <summary>
+            Gets the base spotify URI
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.BaseApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.BaseApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="P:SpotifyWebApi.Api.BaseApi.Token"/>.</param>
+        </member>
+        <member name="P:SpotifyWebApi.Api.BaseApi.Token">
+            <summary>
+            Gets the <see cref="P:SpotifyWebApi.Api.BaseApi.Token"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.BaseApi.MakeUri(System.String)">
+            <summary>
+            Makes a Spotify url from the <see cref="F:SpotifyWebApi.Api.BaseApi.BaseUri"/> and the provided <paramref name="relativeUrl"/>.
+            </summary>
+            <param name="relativeUrl">The relative URL.</param>
+            <returns>The full request uri.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.BaseApi.MakeUri(System.String,System.ValueTuple{System.String,System.String}[])">
+            <summary>
+            Makes a Spotify uri from the <see cref="F:SpotifyWebApi.Api.BaseApi.BaseUri"/> and the provided <paramref name="relativeUrl"/>.
+            Also adding any query parameters.
+            </summary>
+            <param name="relativeUrl">The relative URL.</param>
+            <param name="parameters">A list of query parameters.
+            Note: When a parameter value is null or empty, the query will not contain the query parameter.</param>
+            <returns>The full request uri.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Browse.BrowseApi">
+            <inheritdoc cref="T:SpotifyWebApi.Api.BaseApi"/>
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.Browse.BrowseApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Browse.BrowseApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.Browse.BrowseApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Browse.BrowseApi.GetFeaturedPlaylists(System.String,System.String,System.Nullable{System.DateTime},System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Api.Browse.IBrowseApi">
+            <summary>
+            The browse api interface.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Browse.IBrowseApi.GetFeaturedPlaylists(System.String,System.String,System.Nullable{System.DateTime},System.Int32,System.Int32)">
+            <summary>
+            Get a list of Spotify featured playlists (shown, for example, on a Spotify player’s ‘Browse’ tab).
+            </summary>
+            <param name="locale">
+            Optional. The desired language, consisting of a lowercase ISO 639-1 language code and an uppercase ISO 3166-1 alpha-2 country code, joined by an underscore.
+            For example: es_MX, meaning “Spanish (Mexico)”. Provide this parameter if you want the results returned in a particular language (where available).
+            Note that, if locale is not supplied, or if the specified language is not available, all strings will be returned in the Spotify default language (American English).
+            The locale parameter, combined with the country parameter, may give odd results if not carefully matched.
+            For example country=SE&amp;locale=de_DE will return a list of categories relevant to Sweden but as German language strings.
+            </param>
+            <param name="country">
+            Optional. A country: an ISO 3166-1 alpha-2 country code. Provide this parameter if you want the list of returned items to be relevant to a particular country. If omitted, the returned items will be relevant to all countries.
+            </param>
+            <param name="timeStamp">
+            Optional. Use this parameter to specify the user’s local time to get results tailored for that specific date and time in the day. If not provided, the response defaults to the current UTC time. Example: “2014-10-23T09:00:00” for a user whose local time is 9AM. If there were no featured playlists (or there is no data) at the specified time, the response will revert to the current UTC time.
+            </param>
+            <param name="maxResults">Optional. The maximum results to return, or -1 to retrieve all items.</param>
+            <param name="offset">
+            Optional. The index of the first item to return. Default: 0 (the first object). Use with limit to get the next set of items.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> and a list of <see cref="T:SpotifyWebApi.Model.SimplePlaylist"/> objects.
+            The <see cref="T:System.String"/> conveys a message like "Monday morning music, coming right up!".
+            </returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Follow.IFollowApi">
+            <summary>
+            The follow api.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Personalization.IPersonalizationApi">
+            <summary>
+            The personalization api.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Player.IPlayerApi">
+            <summary>
+            The player api.
+            </summary>
+            <remarks>These endpoints are in Beta.</remarks>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.GetAvailableDevices">
+            <summary>
+            Get information about a user’s available devices.
+            </summary>
+            <returns>A list of available devices.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.GetCurrentlyPlayingContext(System.String)">
+            <summary>
+            Get information about the user’s current playback state, including track, track progress, and active device.
+            </summary>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>The users <see cref="T:SpotifyWebApi.Model.CurrentlyPlayingContext"/> instance.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.GetCurrentlyPlaying(System.String)">
+            <summary>
+            Get the object currently being played on the user’s Spotify account.
+            </summary>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>The users <see cref="T:SpotifyWebApi.Model.CurrentlyPlaying"/> object.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.TransferPlayback(System.Collections.Generic.List{SpotifyWebApi.Model.Device},System.Nullable{System.Boolean})">
+            <summary>
+            Transfer playback to a new device and determine if it should start playing.
+            </summary>
+            <param name="devices">Required. A list containing the devices on which playback should be started/transferred.
+            NOTE: Although an list is accepted, only a single <see cref="T:SpotifyWebApi.Model.Device"/> is currently supported.</param>
+            <param name="play">Optional.
+            <c>True</c>: ensure playback happens on new device.
+            <c>False</c> or not provided: keep the current playback state.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.StartPlayback(SpotifyWebApi.Model.Device,SpotifyWebApi.Model.Uri.SpotifyUri,System.Collections.Generic.List{SpotifyWebApi.Model.Uri.SpotifyUri})">
+            <summary>
+            Start a new context or resume current playback on the user’s active device.
+            TODO: Add offset parameter.
+            </summary>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <param name="contextUri">Optional. Spotify URI of the context to play. Valid contexts are albums, artists &amp; playlists.</param>
+            <param name="uris">Optional. A list of the Spotify track URIs to play.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.PausePlayback(SpotifyWebApi.Model.Device)">
+            <summary>
+            Pause playback on the user’s account.
+            </summary>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.Next(SpotifyWebApi.Model.Device)">
+            <summary>
+            Skips to next track in the user’s queue.
+            </summary>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.Previous(SpotifyWebApi.Model.Device)">
+            <summary>
+            Skips to previous track in the user’s queue.
+            Note that this will ALWAYS skip to the previous track, regardless of the current track’s progress.
+            Returning to the start of the current track should be performed using the <see cref="M:SpotifyWebApi.Api.Player.IPlayerApi.Seek(System.Int32,SpotifyWebApi.Model.Device)"/> function.
+            </summary>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.Seek(System.Int32,SpotifyWebApi.Model.Device)">
+            <summary>
+            Seeks to the given position in the user’s currently playing track.
+            </summary>
+            <param name="positionMs">The position in milliseconds to seek to. Must be a positive number. Passing in a position that is greater than the length of the track will cause the player to start playing the next song.</param>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.SetRepeat(SpotifyWebApi.Model.Enum.RepeatState,SpotifyWebApi.Model.Device)">
+            <summary>
+            Set the repeat mode for the user’s playback. Options are repeat-track, repeat-context, and off.
+            </summary>
+            <param name="state">The state of repeat.</param>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.SetVolume(System.Int32,SpotifyWebApi.Model.Device)">
+            <summary>
+            Set the volume for the user’s current playback device.
+            </summary>
+            <param name="volumePercent">The volume to set. Must be a value from 0 to 100 inclusive.</param>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.IPlayerApi.SetShuffle(System.Boolean,SpotifyWebApi.Model.Device)">
+            <summary>
+            Toggle shuffle on or off for user’s playback.
+            </summary>
+            <param name="state"><c>True</c>: Shuffle user's playback. <c>False</c>: Do not shuffle user's playback</param>
+            <param name="device">Optional. The device this command is targeting. If not supplied, the user's currently active device is the target.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Player.PlayerApi">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.Player.PlayerApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.Player.PlayerApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token" />.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.GetAvailableDevices">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.GetCurrentlyPlayingContext(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.GetCurrentlyPlaying(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.TransferPlayback(System.Collections.Generic.List{SpotifyWebApi.Model.Device},System.Nullable{System.Boolean})">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.StartPlayback(SpotifyWebApi.Model.Device,SpotifyWebApi.Model.Uri.SpotifyUri,System.Collections.Generic.List{SpotifyWebApi.Model.Uri.SpotifyUri})">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.PausePlayback(SpotifyWebApi.Model.Device)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.Next(SpotifyWebApi.Model.Device)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.Previous(SpotifyWebApi.Model.Device)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.Seek(System.Int32,SpotifyWebApi.Model.Device)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.SetRepeat(SpotifyWebApi.Model.Enum.RepeatState,SpotifyWebApi.Model.Device)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.SetVolume(System.Int32,SpotifyWebApi.Model.Device)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Player.PlayerApi.SetShuffle(System.Boolean,SpotifyWebApi.Model.Device)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Api.Playlist.IPlaylistApi">
+            <summary>
+            The playlist api.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.IPlaylistApi.GetUsersPlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.Int32,System.Int32)">
+            <summary>
+            Get a list of the playlists owned or followed by a Spotify user.
+            </summary>
+            <param name="user">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> of the user.</param>
+            <param name="maxResults">Optional. The maximum results to return, or -1 to retrieve all items.</param>
+            <param name="offset">Optional. The index of the first playlist to return.
+            Default: 0 (the first object).
+            Maximum offset: 100.000. Use with limit to get the next set of playlists.</param>
+            <returns>A list of <see cref="T:SpotifyWebApi.Model.SimplePlaylist"/>s.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.IPlaylistApi.GetMyPlaylists(System.Int32,System.Int32)">
+            <summary>
+            Get a list of the playlists owned or followed by the current Spotify user.
+            </summary>
+            <param name="maxResults">Optional. The maximum results to return, or -1 to retrieve all items.</param>
+            <param name="offset">Optional. The index of the first playlist to return.
+            Default: 0 (the first object).
+            Maximum offset: 100.000. Use with limit to get the next set of playlists.</param>
+            <returns>A list of <see cref="T:SpotifyWebApi.Model.SimplePlaylist"/>s.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.IPlaylistApi.GetPlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <summary>
+            Get a playlist owned by a Spotify user.
+            </summary>
+            <param name="playlistUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the playlist.</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>A <see cref="T:SpotifyWebApi.Model.FullPlaylist"/> object.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.IPlaylistApi.GetPlaylistTracks(SpotifyWebApi.Model.Uri.SpotifyUri,System.Int32,System.Int32,System.String)">
+            <summary>
+            Get full details of the tracks of a playlist owned by a Spotify user.
+            </summary>
+            <param name="playlistUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the playlist.</param>
+            <param name="maxResults">Optional. The maximum results to return, or -1 to retrieve all items.</param>
+            <param name="offset">Optional. The index of the first track to return. Default: 0 (the first object).</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>A list of <see cref="T:SpotifyWebApi.Model.PlaylistTrack"/> objects.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.IPlaylistApi.CreatePlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.String,System.Boolean,System.Boolean,System.String)">
+            <summary>
+            Create a playlist for a Spotify user.
+            See Remarks for <paramref name="public"/> and <paramref name="collaborative"/> parameters.
+            </summary>
+            <param name="user">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> of the user.</param>
+            <param name="name">The name for the new playlist, for example "Your Coolest Playlist". This name does not need to be unique; a user may have several playlists with the same name.</param>
+            <param name="public">Optional. If true the playlist will be public, if false it will be private.</param>
+            <param name="collaborative">Optional. If true the playlist will be collaborative. Note that to create a collaborative playlist you must also set public to false.</param>
+            <param name="description">Optional. Value for playlist description as displayed in Spotify Clients and in the Web API.</param>
+            <returns>The created <see cref="T:SpotifyWebApi.Model.FullPlaylist"/>.</returns>
+            <remarks>
+            Note: that the playlist will be empty until you add tracks.
+            Note: To be able to create private playlists, the user must have granted the <see cref="F:SpotifyWebApi.Model.Enum.Scope.PlaylistModifyPrivate"/> scope.
+            Note: To create collaborative playlists you must have granted <see cref="F:SpotifyWebApi.Model.Enum.Scope.PlaylistModifyPrivate"/> and <see cref="F:SpotifyWebApi.Model.Enum.Scope.PlaylistModifyPublic"/> scopes.
+            </remarks>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.IPlaylistApi.AddTracksToPlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri},System.Nullable{System.Int32})">
+            <summary>
+            Add one or more tracks to a user’s playlist.
+            </summary>
+            <param name="playlistUri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the playlist.</param>
+            <param name="tracks">A list of <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>'s to add to the playlist.</param>
+            <param name="position">Optional. The position to insert the tracks, a zero-based index.</param>
+            <returns>Tha add tracks to playlist task.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Playlist.PlaylistApi">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.Playlist.PlaylistApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.PlaylistApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.Playlist.PlaylistApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.PlaylistApi.GetUsersPlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.PlaylistApi.GetMyPlaylists(System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.PlaylistApi.GetPlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.PlaylistApi.GetPlaylistTracks(SpotifyWebApi.Model.Uri.SpotifyUri,System.Int32,System.Int32,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.PlaylistApi.CreatePlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.String,System.Boolean,System.Boolean,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Playlist.PlaylistApi.AddTracksToPlaylist(SpotifyWebApi.Model.Uri.SpotifyUri,System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri},System.Nullable{System.Int32})">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Api.Search.ISearchApi">
+            <summary>
+            The search api.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Search.ISearchApi.Search(System.String,SpotifyWebApi.Model.Enum.SearchType,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.
+            Note: There is only support for 20 results per category.
+            TODO: Add support for more than 20 results per category.
+            </summary>
+            <param name="query">The search query's keywords (and optional field filters and operators).
+            For more info see: https://developer.spotify.com/web-api/search-item/ </param>
+            <param name="searchTypes">A list of item types to search across.
+            Note you can specify multiple search types like: <c>SearchType.Album | SearchType.Artist</c>.</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code.</param>
+            <param name="offset">Optional. The starting offset of the search.</param>
+            <param name="resultLimit">The maximum results to return per category.</param>
+            <returns>A list of <see cref="T:System.Object"/>s.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Search.SearchApi">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.Search.SearchApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Search.SearchApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.Search.SearchApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Search.SearchApi.Search(System.String,SpotifyWebApi.Model.Enum.SearchType,System.String,System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Api.Track.ITrackApi">
+            <summary>
+            The track api.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Track.ITrackApi.GetTrack(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <summary>
+            Get Spotify catalog information for a single track identified by its <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>
+            </summary>
+            <param name="uri">The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> for the track.</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>A <see cref="T:SpotifyWebApi.Model.FullTrack"/> object.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Track.ITrackApi.GetTracks(System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri},System.String)">
+            <summary>
+            Get Spotify catalog information for multiple tracks based on their <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>s.
+            </summary>
+            <param name="uris">A list of <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>s. Note a maximum of 50 tracks is allowed.</param>
+            <param name="market">Optional. An ISO 3166-1 alpha-2 country code. Provide this parameter if you want to apply Track Relinking.</param>
+            <returns>A list of <see cref="T:SpotifyWebApi.Model.FullTrack"/> objects.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.Track.TrackApi">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.Track.TrackApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Track.TrackApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.Track.TrackApi"/> class.
+            </summary>
+            <param name="token">A valid access token.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.Track.TrackApi.GetTrack(SpotifyWebApi.Model.Uri.SpotifyUri,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.Track.TrackApi.GetTracks(System.Collections.Generic.IList{SpotifyWebApi.Model.Uri.SpotifyUri},System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Api.UserLibrary.IUserLibraryApi">
+            <summary>
+            The user library api.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Api.UserProfile.IUserProfileApi">
+            <summary>
+            The user profile api.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.UserProfile.IUserProfileApi.GetMe">
+            <summary>
+            Get detailed profile information about the current user (including the current user’s username).
+            </summary>
+            <returns>A <see cref="T:SpotifyWebApi.Model.PrivateUser"/> object representing the current user.</returns>
+            <remarks>
+            A valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details.
+            The access token must have been issued on behalf of the current user.
+            Reading the user’s email address requires the <see cref="F:SpotifyWebApi.Model.Enum.Scope.UserReadEmail"/> scope;
+            reading country and product subscription level requires the <see cref="F:SpotifyWebApi.Model.Enum.Scope.UserReadPrivate"/> scope.
+            Reading the user’s birthdate requires the <see cref="F:SpotifyWebApi.Model.Enum.Scope.UserReadBirthdate"/> scope.
+            </remarks>
+        </member>
+        <member name="M:SpotifyWebApi.Api.UserProfile.IUserProfileApi.GetUser(SpotifyWebApi.Model.Uri.SpotifyUri)">
+            <summary>
+            Get public profile information about a Spotify user.
+            </summary>
+            <param name="userUri">The user’s Spotify user ID.</param>
+            <returns>The requested user.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Api.UserProfile.UserProfileApi">
+            <inheritdoc cref="T:SpotifyWebApi.Api.BaseApi"/>
+            <summary>
+            The <see cref="T:SpotifyWebApi.Api.UserProfile.UserProfileApi"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Api.UserProfile.UserProfileApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Api.UserProfile.UserProfileApi"/> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Api.UserProfile.UserProfileApi.GetMe">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Api.UserProfile.UserProfileApi.GetUser(SpotifyWebApi.Model.Uri.SpotifyUri)">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Auth.AuthCode.AccessTokenRequest">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Auth.AuthCode.AccessTokenRequest"/> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthCode.AccessTokenRequest.GrantType">
+            <summary>
+            The grant type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthCode.AccessTokenRequest.Code">
+            <summary>
+            The code.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthCode.AccessTokenRequest.RedirectUri">
+            <summary>
+            The redirect uri.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Auth.AuthorizationCode">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Auth.AuthorizationCode"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Auth.AuthorizationCode.GetUrl(SpotifyWebApi.Auth.AuthParameters,System.String)">
+            <summary>
+            Retrieves the authentication url for authenticating with the spotify web api.
+            </summary>
+            <param name="parameters">The <see cref="T:SpotifyWebApi.Auth.AuthParameters"/> to use while creating the url.</param>
+            <param name="state">The state to use while creating the url.
+            For more info see 'https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow'</param>
+            <returns>The url that the user can use to authenticate this application.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Auth.AuthorizationCode.ProcessCallback(SpotifyWebApi.Auth.AuthParameters,System.String,System.String)">
+            <summary>
+            Processes the callback and returns the <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.
+            </summary>
+            <param name="parameters">The parameters used in <see cref="M:SpotifyWebApi.Auth.AuthorizationCode.GetUrl(SpotifyWebApi.Auth.AuthParameters,System.String)"/>.</param>
+            <param name="code">The retrieved code.</param>
+            <param name="error">The retrieved error.</param>
+            <returns>The new token.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Auth.AuthorizationCode.RefreshToken(SpotifyWebApi.Auth.AuthParameters,SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Requests a refresh token from the spotify web api.
+            </summary>
+            <param name="parameters">The authentication parameters.</param>
+            <param name="oldToken">The old token.</param>
+            <returns>A new refreshed token.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Auth.AuthParameters">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Auth.AuthParameters"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthParameters.ClientId">
+            <summary>
+            Gets or sets the authentication client id.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthParameters.ClientSecret">
+            <summary>
+            Gets or sets the authentication client secret.
+            Note that this is only used for the <see cref="T:SpotifyWebApi.Auth.AuthorizationCode"/> flow.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthParameters.RedirectUri">
+            <summary>
+            Gets or sets the authentication redirect uri.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthParameters.ShowDialog">
+            <summary>
+            Gets or sets a value indicating wheter to show the login screen every time the user is requested to login.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Auth.AuthParameters.Scopes">
+            <summary>
+            Gets or sets the authentication scopes.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Auth.ClientCredentials">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Auth.ClientCredentials"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Auth.ClientCredentials.GetToken(SpotifyWebApi.Auth.AuthParameters)">
+            <summary>
+            Retrieves a valid token from the Spotify web api.
+            </summary>
+            <param name="parameters">The <see cref="T:SpotifyWebApi.Auth.AuthParameters"/> used for this token.</param>
+            <returns>A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Auth.ImplicitGrant">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Auth.ImplicitGrant"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Auth.ImplicitGrant.GetUrl(SpotifyWebApi.Auth.AuthParameters,System.String)">
+            <summary>
+            Retrieves the authentication url for authenticating with the spotify web api.
+            </summary>
+            <param name="parameters">The <see cref="T:SpotifyWebApi.Auth.AuthParameters"/> to use while creating the url.</param>
+            <param name="state">The state to use while creating the url.
+            For more info see 'https://developer.spotify.com/web-api/authorization-guide/#implicit_grant_flow'</param>
+            <returns>The url that the user can use to authenticate this application.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Auth.ImplicitGrant.Callback(System.String,System.String,System.Int32)">
+            <summary>
+            Creates a token from the callback url.
+            </summary>
+            <param name="accessToken">The accesstoken.</param>
+            <param name="tokenType">The tokentype.</param>
+            <param name="expiresIn">The expires in.</param>
+            <returns>A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Business.ApiClient">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Business.ApiClient"/> class used for communicating with a REST service.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiClient.GetAsync``1(System.Uri,SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Gets from an uri asynchronously.
+            </summary>
+            <typeparam name="T">The expected return object.</typeparam>
+            <param name="uri">The request URI.</param>
+            <param name="token">Optional. A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+            <returns>The response of the HTTP GET.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiClient.PostAsync``1(System.Uri,System.Object,SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Posts to an uri asynchronously.
+            </summary>
+            <typeparam name="T">The expected return object.</typeparam>
+            <param name="uri">The request URI.</param>
+            <param name="body">The body of the request.</param>
+            <param name="token">Optional. A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+            <returns>The response of the HTTP POST.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiClient.PutAsync``1(System.Uri,System.Object,SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Puts to an uri asynchronously.
+            </summary>
+            <typeparam name="T">The expected return object.</typeparam>
+            <param name="uri">The request URI.</param>
+            <param name="body">The body of the request.</param>
+            <param name="token">Optional. A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+            <returns>The response of the HTTP PUT.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiClient.DeleteAsync``1(System.Uri,SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Deletes from an uri asynchronously.
+            </summary>
+            <typeparam name="T">The expected return object.</typeparam>
+            <param name="uri">The request URI.</param>
+            <param name="token">Optional. A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+            <returns>The response of the HTTP DELETE.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiClient.MakeHttpClient(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Makes the HTTP client.
+            </summary>
+            <param name="token">Optional. A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+            <returns>A newly created <see cref="T:System.Net.Http.HttpClient"/> containing the authentication provided by the token.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiClient.DeserializeObject``1(System.String)">
+            <summary>
+            Custom deserialization with StringEnumConverter.
+            </summary>
+            <typeparam name="T">The type of the expected object.</typeparam>
+            <param name="json">The json to deserialize.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiClient.SerializeObject(System.Object)">
+            <summary>
+            Custom serialization with StringEnumConverter.
+            </summary>
+            <param name="obj">The object to serialize.</param>
+            <returns>The serialized JSON.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Business.ApiHelper">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Business.ApiHelper"/>.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Business.ApiHelper.BaseUri">
+            <summary>
+            The base uri for all api requests.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiHelper.CreateRequest(System.Uri)">
+            <summary>
+            Creates a new <see cref="T:System.Net.HttpWebRequest"/> from the specified <paramref name="uri"/>.
+            </summary>
+            <param name="uri">The uri of the request.</param>
+            <returns>A new <see cref="T:System.Net.HttpWebRequest"/> from the specified uri.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.ApiHelper.Base64Encode(System.String)">
+            <summary>
+            Encodes a string to Base64.
+            </summary>
+            <param name="plainText">The string to encode.</param>
+            <returns>The base 64 encoded string.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Business.HelperExtensions">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Business.HelperExtensions"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Business.HelperExtensions.LoadToList``1(SpotifyWebApi.Model.Paging{``0},SpotifyWebApi.Model.Auth.Token,System.Int32)">
+            <summary>
+            Loads to list.
+            </summary>
+            <typeparam name="T">The type of the paging object.</typeparam>
+            <param name="paging">The paging object.</param>
+            <param name="token">The token.</param>
+            <param name="maxItems">The maximum items to return.</param>
+            <returns>The final list{T}</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.HelperExtensions.ChunkBy``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Chunk a list by <paramref name="chunkSize"/>.
+            </summary>
+            <typeparam name="T">The type of the list.</typeparam>
+            <param name="source">The source list.</param>
+            <param name="chunkSize">Size of the chunks.</param>
+            <returns>A List of lists containing the chunked lists.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Business.HelperExtensions.AsSingleString(System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Converts a list of strings to a single string with a separator.
+            </summary>
+            <param name="list">The list to convert.</param>
+            <param name="separator">The separator to put between the list items.</param>
+            <returns>The created string.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Business.Validation">
+            <summary>
+            A static class used for validation a variance of objects.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Business.Validation.ValidateList``1(System.Collections.Generic.ICollection{``0},System.Int32,System.Int32)">
+            <summary>
+            Validates a list and throws a <see cref="T:SpotifyWebApi.Model.Exception.ValidationException"/> when failed.
+            </summary>
+            <param name="list">The list to validate</param>
+            <param name="min">The minimum number of items in the list.</param>
+            <param name="max">The maximum number of items in the list.</param>
+            <typeparam name="T">Type of the list to validate.</typeparam>
+            <exception cref="T:SpotifyWebApi.Model.Exception.ValidationException">Throws a validation exception when the list is null or invalid.</exception>
+        </member>
+        <member name="M:SpotifyWebApi.Business.Validation.ValidateInteger(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Validates a integer and throws a <see cref="T:SpotifyWebApi.Model.Exception.ValidationException"/> when failed.
+            </summary>
+            <param name="value">The value to validate</param>
+            <param name="min">The minimum of the value.</param>
+            <param name="max">The maximum of the value.</param>
+            <exception cref="T:SpotifyWebApi.Model.Exception.ValidationException">Throws a validation exception when the value is invalid.</exception>
+        </member>
+        <member name="M:SpotifyWebApi.Business.Validation.ValidateToken(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Validates a <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.
+            Note this function does not check for expired tokens!
+            </summary>
+            <param name="token">The token to validate.</param>
+            <exception cref="T:SpotifyWebApi.Model.Exception.ValidationException">Throws a validation exception when the value is invalid.</exception>
+        </member>
+        <member name="M:SpotifyWebApi.Business.Validation.ValidateResponseCode(System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Validates a <see cref="T:System.Net.HttpStatusCode"/> and throws errors based on the code.
+            </summary>
+            <param name="statusCode">The status code to validate.</param>
+            <param name="response">The response of the http request.</param>
+        </member>
+        <member name="T:SpotifyWebApi.ISpotifyWebApi">
+            <summary>
+            The <see cref="T:SpotifyWebApi.ISpotifyWebApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Album">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Album.IAlbumApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Artist">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Artist.IArtistApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Browse">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Browse.IBrowseApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Follow">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Follow.IFollowApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Personalization">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Personalization.IPersonalizationApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Player">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Player.IPlayerApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Playlist">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Playlist.IPlaylistApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Search">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Search.ISearchApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.Track">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.Track.ITrackApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.UserLibrary">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.UserLibrary.IUserLibraryApi"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.ISpotifyWebApi.UserProfile">
+            <summary>
+            Gets the implementation of <see cref="T:SpotifyWebApi.Api.UserProfile.IUserProfileApi"/>.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Auth.Token">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Auth.Token" /> class.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Auth.Token.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Auth.Token"/> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.AccessToken">
+            <summary>
+            Gets or sets the access token.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.Scope">
+            <summary>
+            Gets or sets the scope.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.ExpiresIn">
+            <summary>
+            Gets or sets the expires in.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.RefreshToken">
+            <summary>
+            Gets or sets the refresh token.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.TokenGenerated">
+            <summary>
+            Gets the token generated.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.IsExpired">
+            <summary>
+            Gets a value indicating whether this instance is expired.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.CanAccessPersonalData">
+            <summary>
+            Gets a value indicating wheter this token can be used to access personal data.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Auth.Token.AuthenticationType">
+            <summary>
+            Gets a value indicating the authentication type of this token.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Auth.Token.Make(System.String,System.String,System.String,System.Int32,System.Nullable{System.DateTime},System.String,System.Boolean,SpotifyWebApi.Model.Auth.TokenAuthenticationType)">
+            <summary>
+            Creates a token.
+            </summary>
+            <param name="accessToken">The access token.</param>
+            <param name="refreshToken">The refresh token.</param>
+            <param name="tokenType">The token type.</param>
+            <param name="expiresIn">The expires in value.</param>
+            <param name="tokenGenerated">The datetime the token was generated.</param>
+            <param name="scope">The scope of the token.</param>
+            <param name="canAccessPersonalData">If the token can access personal data.</param>
+            <param name="authenticationType">The authentication type of the token.</param>
+            <returns>The newly made <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Auth.Token.ToHeaderString">
+            <summary>
+            Creates a header string from this instance.
+            </summary>
+            <returns>The web header string.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Auth.Token.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:SpotifyWebApi.Model.Auth.TokenAuthenticationType">
+            <summary>
+            Enum defining token types.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Auth.TokenAuthenticationType.AuthorizationCode">
+            <summary>
+            Token generated using Authorization Code.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Auth.TokenAuthenticationType.ClientCredentials">
+            <summary>
+            Token generated using Client Credentials.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Auth.TokenAuthenticationType.ImplicitGrant">
+            <summary>
+            Token generated using Implicit Grant.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Context">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Context" />.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Context.Uri">
+            <summary>
+            Gets or sets the uri of the context.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Context.Href">
+            <summary>
+            Gets or sets the href of the context, or null if not available.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Context.ExternalUrls">
+            <summary>
+            Gets or sets the external urls of the context, or null if not available.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Context.Type">
+            <summary>
+            Gets or sets the object type of the item's context. Can be one of "album", "artist" or "playlist".
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Copyright">
+            <summary>
+            Class Copyright.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Copyright.Text">
+            <summary>
+            Gets or sets the text.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Copyright.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.CurrentlyPlaying">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.CurrentlyPlaying"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlaying.Context">
+            <summary>
+            Gets or sets a Context Object. Can be null.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlaying.Timestamp">
+            <summary>
+            Gets or sets unix Millisecond Timestamp when data was fetched
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlaying.ProgressMs">
+            <summary>
+            Gets or sets progress into the currently playing track. Can be null.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlaying.IsPlaying">
+            <summary>
+            Gets or sets if something is currently playing.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlaying.Item">
+            <summary>
+            Gets or sets the currently playing track. Can be null.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.CurrentlyPlayingContext">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.CurrentlyPlayingContext" />.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.Device">
+            <summary>
+            Gets or sets the device that is currently active.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.RepeatState">
+            <summary>
+            Gets or sets the repeat state: off, track, context.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.ShuffleState">
+            <summary>
+            Gets or sets a value indicating whether shuffle is on or off
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.Context">
+            <summary>
+            Gets or sets the context.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.TimestampMs">
+            <summary>
+            Gets or sets the Unix Millisecond Timestamp when data was fetched
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.Timestamp">
+            <summary>
+            Gets the <see cref="T:System.DateTime"/> object of the <see cref="P:SpotifyWebApi.Model.CurrentlyPlayingContext.TimestampMs"/>
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.ProgressMs">
+            <summary>
+            Gets or sets the progress into the currently playing track. Can be null.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.IsPlaying">
+            <summary>
+            Gets or sets a value indicating whether if something is currently playing.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CurrentlyPlayingContext.Item">
+            <summary>
+            Gets or sets the currently playing track. Can be null.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Cursor">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Cursor" />.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Cursor.After">
+            <summary>
+            Gets or sets the after.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.CursorPaging`1">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.CursorPaging`1" /> class.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:SpotifyWebApi.Model.CursorPaging`1"/></typeparam>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CursorPaging`1.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CursorPaging`1.Items">
+            <summary>
+            Gets or sets the items.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CursorPaging`1.Limit">
+            <summary>
+            Gets or sets the limit.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CursorPaging`1.Next">
+            <summary>
+            Gets or sets the next.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CursorPaging`1.Cursors">
+            <summary>
+            Gets or sets the cursors.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.CursorPaging`1.Total">
+            <summary>
+            Gets or sets the total.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Device">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Device"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Device.Id">
+            <summary>
+            Gets or sets the device ID. This may be null.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Device.IsActive">
+            <summary>
+            Gets or sets a value indicating if this device is the currently active device.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Device.IsRestricted">
+            <summary>
+            Gets or sets a value indicating whether controlling this device is restricted.
+            At present if this is "true" then no Web API commands will be accepted by this device.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Device.Name">
+            <summary>
+            Gets or sets the name of the device.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Device.Type">
+            <summary>
+            Gets or sets device type, such as "Computer", "Smartphone" or "Speaker".
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Device.VolumePercent">
+            <summary>
+            Gets or sets the current volume in percent. This may be null.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.DeviceList">
+            <summary>
+            The device list object.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.DeviceList.Devices">
+            <summary>
+            A list of devices.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Enum.AlbumType">
+            <summary>
+            Enum AlbumType
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.AlbumType.Album">
+            <summary>
+            The album
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.AlbumType.Single">
+            <summary>
+            The single
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.AlbumType.AppearsOn">
+            <summary>
+            The appears on
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.AlbumType.Compilation">
+            <summary>
+            The compilation
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Enum.ContextType">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Enum.ContextType"/>.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.ContextType.Album">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.ContextType.Artist">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.ContextType.Playlist">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Enum.EnumExtensions">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Enum.EnumExtensions" />.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Enum.EnumExtensions.AsString(SpotifyWebApi.Model.Enum.AlbumType)">
+            <summary>
+            Ases the string.
+            </summary>
+            <param name="albumType">Type of the album.</param>
+            <returns>System.String.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">albumType - null</exception>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Enum.EnumExtensions.AsString(SpotifyWebApi.Model.Enum.Scope)">
+            <summary>
+            Casts the <see cref="T:SpotifyWebApi.Model.Enum.Scope"/> as string.
+            </summary>
+            <param name="scope">The enum member to convert to a string.</param>
+            <returns>The casted string.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Enum.RepeatState">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Enum.RepeatState"/>.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.RepeatState.Track">
+            <summary>
+            Will repeat the current track.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.RepeatState.Context">
+            <summary>
+            Will repeat the current context.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.RepeatState.Off">
+            <summary>
+            Will turn repeat off.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Enum.Scope">
+            <summary>
+            Enum Scope
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.None">
+            <summary>
+            If no scope is specified, access is permitted only to publicly available information: that is, only information normally visible to normal logged-in users of the Spotify desktop, web, and mobile clients (e.g. public playlists).
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.PlaylistReadPrivate">
+            <summary>
+            Read access to user's private playlists.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.PlaylistReadCollaborative">
+            <summary>
+            Include collaborative playlists when requesting a user's playlists.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.PlaylistModifyPublic">
+            <summary>
+            Write access to a user's public playlists.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.PlaylistModifyPrivate">
+            <summary>
+            Write access to a user's private playlists.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UgcImageUpload">
+            <summary>
+            Upload playlist cover image.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserFollowModify">
+            <summary>
+            Write/delete access to the list of artists and other users that the user follows.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserFollowRead">
+            <summary>
+            Read access to the list of artists and other users that the user follows.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserLibraryRead">
+            <summary>
+            Read access to a user's "Your Music" library.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserLibraryModify">
+            <summary>
+            Write/delete access to a user's "Your Music" library.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserReadPrivate">
+            <summary>
+            Read access to user’s subscription details (type of user account).
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserReadBirthdate">
+            <summary>
+            Read access to the user's birthdate.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserReadEmail">
+            <summary>
+            Read access to user’s email address.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserTopRead">
+            <summary>
+            Read access to a user's top artists and tracks.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserReadPlaybackState">
+            <summary>
+            Read access to a user's playback state.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserModifyPlaybackState">
+            <summary>
+            Control playback on Spotify clients and Spotify Connect devices.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserReadCurrentlyPlaying">
+            <summary>
+            Read access to a user's currently playing track
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.UserReadRecentlyPlayed">
+            <summary>
+            Read access to a user's recently played items.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.Scope.All">
+            <summary>
+            Request access to all scopes.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Enum.SearchType">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Enum.SearchType"/>.
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.SearchType.Album">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.SearchType.Artist">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.SearchType.Playlist">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Enum.SearchType.Track">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Error">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Error" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Error.Status">
+            <summary>
+            Gets or sets the status.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Error.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.BadGatewayException">
+            <summary>
+            The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.BadGatewayException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.BadGatewayException"/> class.
+            </summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.BadRequestException">
+            <summary>
+            The request could not be understood by the server due to malformed syntax.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.BadRequestException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.BadRequestException"/> class.
+            </summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.ForbiddenException">
+            <summary>
+            The server understood the request, but is refusing to fulfill it.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.ForbiddenException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.ForbiddenException"/> class.
+            </summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.InternalServerErrorException">
+            <summary>
+            An error you should (according to Spotify) never recieve.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.InternalServerErrorException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.InternalServerErrorException"/> class.
+            </summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.InvalidUriException">
+            <summary>
+            Exception that gets thrown when creating a spotify uri from a non valid string.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.InvalidUriException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.InvalidUriException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.NotFoundException">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Exception.NotFoundException"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.NotFoundException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.NotFoundException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.ServiceUnavailableException">
+            <summary>
+            The server is currently unable to handle the request due to a temporary condition which will be alleviated after some delay.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.ServiceUnavailableException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.ServiceUnavailableException"/> class.
+            </summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.TooManyRequestsException">
+            <summary>
+            Rate limiting has been applied.
+            See <see href="https://developer.spotify.com/documentation/web-api/#rate-limiting">here</see>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.TooManyRequestsException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.TooManyRequestsException"/> class.
+            </summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.UserNotPremiumException">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Exception.UserNotPremiumException"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.UserNotPremiumException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.UserNotPremiumException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Exception.ValidationException">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Exception.ValidationException"/>.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Exception.ValidationException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Exception.ValidationException"/> class.
+            </summary>
+            <param name="message">The validation message.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Followers">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Followers" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Followers.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Followers.Total">
+            <summary>
+            Gets or sets the total.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.FullAlbum">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.FullAlbum" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.AlbumType">
+            <summary>
+            Gets or sets the type of the album.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Artists">
+            <summary>
+            Gets or sets the artists.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.AvailableMarkets">
+            <summary>
+            Gets or sets the available markets.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Copyrights">
+            <summary>
+            Gets or sets the copyrights.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.ExternalIds">
+            <summary>
+            Gets or sets the external ids.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Genres">
+            <summary>
+            Gets or sets the genres.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Images">
+            <summary>
+            Gets or sets the images.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Label">
+            <summary>
+            Gets or sets the label.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Popularity">
+            <summary>
+            Gets or sets the popularity.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.ReleaseDate">
+            <summary>
+            Gets or sets the release date.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.ReleaseDatePrecision">
+            <summary>
+            Gets or sets the release date precision.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Tracks">
+            <summary>
+            Gets or sets the tracks.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullAlbum.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.FullArtist">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.FullArtist" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Followers">
+            <summary>
+            Gets or sets the followers.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Genres">
+            <summary>
+            Gets or sets the genres.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Images">
+            <summary>
+            Gets or sets the images.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Popularity">
+            <summary>
+            Gets or sets the popularity.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullArtist.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.FullPlaylist">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.FullPlaylist" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Collaborative">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:SpotifyWebApi.Model.FullPlaylist"/> is collaborative.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Description">
+            <summary>
+            Gets or sets the description.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Followers">
+            <summary>
+            Gets or sets the followers.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Images">
+            <summary>
+            Gets or sets the images.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Owner">
+            <summary>
+            Gets or sets the owner.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Public">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:SpotifyWebApi.Model.FullPlaylist"/> is public.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.SnapshotId">
+            <summary>
+            Gets or sets the snapshot identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Tracks">
+            <summary>
+            Gets or sets the tracks.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullPlaylist.TrackList">
+            <summary>
+            Gets or sets the track list.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.FullTrack">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.FullTrack" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Album">
+            <summary>
+            Gets or sets the album.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Artists">
+            <summary>
+            Gets or sets the artists.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.AvailableMarkets">
+            <summary>
+            Gets or sets the available markets.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.DiscNumber">
+            <summary>
+            Gets or sets the disc number.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.DurationMs">
+            <summary>
+            Gets or sets the duration ms.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Explicit">
+            <summary>
+            Gets or sets the explicit.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.ExternalIds">
+            <summary>
+            Gets or sets the external ids.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.IsPlayable">
+            <summary>
+            Gets or sets a value indicating whether this instance is playable.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.LinkedFrom">
+            <summary>
+            Gets or sets the linked from.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Popularity">
+            <summary>
+            Gets or sets the popularity.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.PreviewUrl">
+            <summary>
+            Gets or sets the preview URL.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.TrackNumber">
+            <summary>
+            Gets or sets the track number.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.FullTrack.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.FullTrack.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Model.FullTrack.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" /> is equal to this instance.
+            </summary>
+            <param name="obj">The object to compare with the current object.</param>
+            <returns><c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Image">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Image" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Image.Height">
+            <summary>
+            Gets or sets the height.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Image.Url">
+            <summary>
+            Gets or sets the URL.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Image.Width">
+            <summary>
+            Gets or sets the width.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.LinkedFrom">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.LinkedFrom" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.LinkedFrom.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.LinkedFrom.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.LinkedFrom.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.LinkedFrom.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.LinkedFrom.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.List.MultipleAlbums">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.List.MultipleAlbums" />.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.List.MultipleAlbums.Albums">
+            <summary>
+            Gets or sets the albums.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.List.MultipleArtists">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.List.MultipleArtists" />.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.List.MultipleArtists.Artists">
+            <summary>
+            Gets or sets the artists.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.List.MultiplePlaylists">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.List.MultiplePlaylists" />.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.List.MultiplePlaylists.Playlists">
+            <summary>
+            Gets or sets the playlists.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.List.MultipleTracks">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.List.MultipleTracks" />.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.List.MultipleTracks.Tracks">
+            <summary>
+            Gets or sets the tracks.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Paging`1">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Paging`1" /> class.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:SpotifyWebApi.Model.Paging`1"/></typeparam>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Paging`1.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Paging`1.Items">
+            <summary>
+            Gets or sets the items.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Paging`1.Limit">
+            <summary>
+            Gets or sets the limit.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Paging`1.Next">
+            <summary>
+            Gets or sets the next.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Paging`1.Offset">
+            <summary>
+            Gets or sets the offset.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Paging`1.Previous">
+            <summary>
+            Gets or sets the previous.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Paging`1.Total">
+            <summary>
+            Gets or sets the total.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.PlaylistTrack">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.PlaylistTrack" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PlaylistTrack.AddedAt">
+            <summary>
+            Gets or sets the added at.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PlaylistTrack.AddedBy">
+            <summary>
+            Gets or sets the added by.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PlaylistTrack.IsLocal">
+            <summary>
+            Gets or sets a value indicating whether this instance is local.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PlaylistTrack.Track">
+            <summary>
+            Gets or sets the track.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.PrivateUser">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.PrivateUser" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Birthdate">
+            <summary>
+            Gets or sets the birthdate.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Country">
+            <summary>
+            Gets or sets the country.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.DisplayName">
+            <summary>
+            Gets or sets the display name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Email">
+            <summary>
+            Gets or sets the email.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Followers">
+            <summary>
+            Gets or sets the followers.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Images">
+            <summary>
+            Gets or sets the images.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Product">
+            <summary>
+            Gets or sets the product.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PrivateUser.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.PublicUser">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.PublicUser" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.DisplayName">
+            <summary>
+            Gets or sets the display name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.Followers">
+            <summary>
+            Gets or sets the followers.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.Images">
+            <summary>
+            Gets or sets the images.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.PublicUser.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Search.ApiSearchResult">
+            <summary>
+            The internal <see cref="T:SpotifyWebApi.Model.Search.ApiSearchResult"/>.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.ApiSearchResult.Albums">
+            <summary>
+            The albums.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.ApiSearchResult.Artists">
+            <summary>
+            The artists.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.ApiSearchResult.Tracks">
+            <summary>
+            The tracks.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.ApiSearchResult.Playlists">
+            <summary>
+            The playlists.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Search.SearchResult">
+            <summary>
+            A search result of a search query.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.SearchResult.Albums">
+            <summary>
+            The albums.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.SearchResult.Artists">
+            <summary>
+            The artists.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.SearchResult.Tracks">
+            <summary>
+            The tracks.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Search.SearchResult.Playlists">
+            <summary>
+            The playlists.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.SimpleAlbum">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.SimpleAlbum" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.AlbumType">
+            <summary>
+            Gets or sets the type of the album.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.Artists">
+            <summary>
+            Gets or sets the artists.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.AvailableMarkets">
+            <summary>
+            Gets or sets the available markets.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.Images">
+            <summary>
+            Gets or sets the images.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleAlbum.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.SimpleArtist">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.SimpleArtist" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleArtist.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleArtist.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleArtist.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleArtist.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleArtist.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleArtist.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.SimplePlaylist">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.SimplePlaylist" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Collaborative">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:SpotifyWebApi.Model.SimplePlaylist"/> is collaborative.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Images">
+            <summary>
+            Gets or sets the images.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Owner">
+            <summary>
+            Gets or sets the owner.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Public">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:SpotifyWebApi.Model.SimplePlaylist"/> is public.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.SnapshotId">
+            <summary>
+            Gets or sets the snapshot identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimplePlaylist.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.SimpleTrack">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.SimpleTrack" /> class.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.Artists">
+            <summary>
+            Gets or sets the artists.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.AvailableMarkets">
+            <summary>
+            Gets or sets the available markets.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.DiscNumber">
+            <summary>
+            Gets or sets the disc number.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.DurationMs">
+            <summary>
+            Gets or sets the duration ms.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.Explicit">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:SpotifyWebApi.Model.SimpleTrack"/> is explicit.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.ExternalUrls">
+            <summary>
+            Gets or sets the external urls.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.Href">
+            <summary>
+            Gets or sets the href.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.PreviewUrl">
+            <summary>
+            Gets or sets the preview URL.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.TrackNumber">
+            <summary>
+            Gets or sets the track number.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.SimpleTrack.Uri">
+            <summary>
+            Gets or sets the URI.
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Uri.SpotifyUri">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri" /> class.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> class.
+            </summary>
+            <param name="uri">The URI.</param>
+            <exception cref="T:System.Exception">
+            Uri was not correct!
+            or
+            Uri was not a spotify uri!
+            </exception>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Uri.SpotifyUri.Domain">
+            <summary>
+            Gets the domain.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Uri.SpotifyUri.Type">
+            <summary>
+            Gets the type.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Uri.SpotifyUri.UserId">
+            <summary>
+            Gets the user identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Uri.SpotifyUri.Id">
+            <summary>
+            Gets the identifier.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.Uri.SpotifyUri.FullUri">
+            <summary>
+            Gets the full URI.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.op_Implicit(System.String)~SpotifyWebApi.Model.Uri.SpotifyUri">
+            <summary>
+            Implicit operator to convert a string to a <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>.
+            </summary>
+            <param name="uri">The uri to convert.</param>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.Make(System.String,SpotifyWebApi.Model.Uri.UriType)">
+            <summary>
+            Creates a <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> from the given id and type.
+            </summary>
+            <param name="id">The id.</param>
+            <param name="type">The <see cref="T:SpotifyWebApi.Model.Uri.UriType"/>.
+            Note this can not be <see cref="F:SpotifyWebApi.Model.Uri.UriType.Playlist"/>, if you want to create a playlist uri use
+            <see cref="M:SpotifyWebApi.Model.Uri.SpotifyUri.Make(System.String)"/> or <see cref="M:SpotifyWebApi.Model.Uri.SpotifyUri.Make(System.String,System.String)"/></param>
+            <returns>A new instance of <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.Make(System.String,System.String)">
+            <summary>
+            Creates a playlist <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> from the given uri.
+            </summary>
+            <param name="userId">The user id.</param>
+            <param name="playlistId">The playlist id.</param>
+            <returns>A new instance of <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>.
+            Note: this will always be of <see cref="F:SpotifyWebApi.Model.Uri.UriType.Playlist"/>.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.Make(System.String)">
+            <summary>
+            Creates a <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/> from the given uri.
+            </summary>
+            <param name="uri">The spotify uri.</param>
+            <returns>A new instance of <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.MakeList(System.String[])">
+            <summary>
+            Creates a list of <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>s for the given uris.
+            </summary>
+            <param name="uri">A list of uris.</param>
+            <returns>A list of <see cref="T:SpotifyWebApi.Model.Uri.SpotifyUri"/>.</returns>
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:SpotifyWebApi.Model.Uri.SpotifyUri.OnDeserialized(System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            This method is called after the object is completely deserialized. Use it instead of the constructror.
+            </summary>
+            <param name="context">The streaming context.</param>
+        </member>
+        <member name="T:SpotifyWebApi.Model.Uri.UriType">
+            <summary>
+            Enum UriType
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Uri.UriType.User">
+            <summary>
+            The user
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Uri.UriType.Track">
+            <summary>
+            The track
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Uri.UriType.Artist">
+            <summary>
+            The artist
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Uri.UriType.Album">
+            <summary>
+            The album
+            </summary>
+        </member>
+        <member name="F:SpotifyWebApi.Model.Uri.UriType.Playlist">
+            <summary>
+            The playlist
+            </summary>
+        </member>
+        <member name="T:SpotifyWebApi.Model.WebResponse">
+            <summary>
+            The <see cref="T:SpotifyWebApi.Model.WebResponse" />.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.WebResponse.#ctor(System.Object,System.Net.HttpStatusCode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.Model.WebResponse"/> class.
+            </summary>
+            <param name="response">The response.</param>
+            <param name="statusCode">The status code.</param>
+        </member>
+        <member name="P:SpotifyWebApi.Model.WebResponse.Response">
+            <summary>
+            The response.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.WebResponse.Type">
+            <summary>
+            Gets the type of the response.
+            </summary>
+        </member>
+        <member name="P:SpotifyWebApi.Model.WebResponse.StatusCode">
+            <summary>
+            Gets or sets the status code of the html request.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.Model.WebResponse.Make(System.Object,System.Net.HttpStatusCode)">
+            <summary>
+            Makes the specified response.
+            </summary>
+            <param name="response">The response.</param>
+            <param name="statusCode">The status code.</param>
+            <returns>The new webresponse.</returns>
+        </member>
+        <member name="T:SpotifyWebApi.SpotifyWebApi">
+            <summary>
+            The main Api class.
+            </summary>
+        </member>
+        <member name="M:SpotifyWebApi.SpotifyWebApi.#ctor(SpotifyWebApi.Model.Auth.Token)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpotifyWebApi.SpotifyWebApi" /> class.
+            </summary>
+            <param name="token">A valid <see cref="T:SpotifyWebApi.Model.Auth.Token"/>.</param>
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Album">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Artist">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Browse">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Follow">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Personalization">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Player">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Playlist">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Search">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.Track">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.UserLibrary">
+            <inheritdoc />
+        </member>
+        <member name="P:SpotifyWebApi.SpotifyWebApi.UserProfile">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
