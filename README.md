@@ -3,9 +3,13 @@
 Downtify is an open source Spofity downloader which makes it possible to download all your favourite songs and/or
 playlists directly from spotify.
 
+![down-prem](https://user-images.githubusercontent.com/14614396/52458742-e7add380-2b69-11e9-8194-99e9131dc5b2.png)
+
+
 A Spotify Premium account is required. 
 
 This project was forked from [Shawak/downtify](https://github.com/Shawak/downtify) and modified a bit.
+
 
 ### Usage
 
