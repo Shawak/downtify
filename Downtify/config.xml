@@ -5,4 +5,5 @@
   <file_exists>SKIP</file_exists>
   <clientId>clientId</clientId>
   <clientSecret>clientSecret</clientSecret>
+  <volume_normalization>false</volume_normalization>
 </configuration>

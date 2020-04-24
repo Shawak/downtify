@@ -25,6 +25,7 @@ To use Downtify, you need to clone/download the repo and edit the `config.txt` f
   <file_exists>SKIP</file_exists>
   <clientId>clientId</clientId>
   <clientSecret>clientSecret</clientSecret>
+  <volume_normalization>false</volume_normalization>
 </configuration>
 ```
 `username` + `password` must be valid Premium user credentials.

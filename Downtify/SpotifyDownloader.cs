@@ -453,6 +453,7 @@ namespace Downtify
             _wr = new Mp3Writer(stream, waveFormat, beConfig);
             _session.PlayerLoad(track);
             _session.PlayerPlay(true);
+            _session.SetVolumeNormalization(bool.Parse(GUI.frmMain.configuration.GetConfiguration("volume_normalization")));
             if (OnDownloadProgress != null)
                 OnDownloadProgress(0);
         }
