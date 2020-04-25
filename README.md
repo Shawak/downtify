@@ -36,6 +36,15 @@ To use Downtify, you need to clone/download the repo and edit the `config.txt` f
 
 You can download the latest version [here](https://github.com/eviabs/downtify-premium/archive/master.zip).
 
+### Known Issues ###
+1. Playlists cannot be loaded at the moment. To download a full playlist follow this:
+    - Open a playlist on Spotify
+   - Select a single song
+   - Press CTRL+A to select all songs
+   - Press CTRL+C to copy all URIs to clipboard
+   - Paste this in `downtify-premium` textbox
+   - Press enter, and all of the songs will be loaded
+
 ### Bugs
 
 Feel free to help developing this mod by reporting any issues at our [bug tracker](https://github.com/eviabs/downtify-premium/issues).
