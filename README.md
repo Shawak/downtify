@@ -16,7 +16,14 @@ This project was forked from [Shawak/downtify](https://github.com/Shawak/downtif
 
 ### Usage
 
-To use Downtify, you need to clone/download the repo and edit the `config.xml` file:
+1. Paste in the text box the song(s) you want to download
+2. Press `Enter` key to list the song(s) you have just pasted
+3. Select the song(s) you want to download from that list
+4. Press `Download`
+
+### Configuration
+
+To use Downtify, you need to clone/download this repo and edit the `config.xml` file:
 ```xml
 <configuration>
   <username>username</username>
@@ -34,11 +41,12 @@ To use Downtify, you need to clone/download the repo and edit the `config.xml` f
 
 ### Downloading
 
-You can download the latest version [here](https://github.com/eviabs/downtify-premium/archive/master.zip).
+You can download the latest version from [here](https://github.com/eviabs/downtify-premium/archive/master.zip).
 
 ### Known Issues ###
+
 1. Playlists cannot be loaded at the moment. To download a full playlist follow this:
-    - Open a playlist on Spotify
+   - Open a playlist on Spotify
    - Select a single song
    - Press CTRL+A to select all songs
    - Press CTRL+C to copy all URIs to clipboard
