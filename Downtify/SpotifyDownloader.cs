@@ -40,7 +40,8 @@ namespace Downtify
         OVERWRITE
     }
 
-    public class SpotifyWeb {
+    public class SpotifyWeb
+    {
 
         ISpotifyWebApi _spotifyWebApi;
         Token _spotifyWebApiToken;
@@ -77,7 +78,8 @@ namespace Downtify
 
         private void RefreshToken(Boolean refreshOnlyIfExpired)
         {
-            if (!refreshOnlyIfExpired || (refreshOnlyIfExpired && _spotifyWebApiToken.IsExpired)) {
+            if (!refreshOnlyIfExpired || (refreshOnlyIfExpired && _spotifyWebApiToken.IsExpired))
+            {
 
                 //=====================
                 // ValidationException("Refresh token was null or empty!") is always thrown, since string.IsNullOrEmpty(oldToken.RefreshToken) is alwyas true.
@@ -486,7 +488,7 @@ namespace Downtify
             return ret;
         }
 
-        private string getUpdatedTrackName(Track track) 
+        private string getUpdatedTrackName(Track track)
         {
             _counter = 0;
             var dir = _downloadPath + escape(GetTrackArtistsNames(track)) + "\\";
@@ -537,17 +539,12 @@ namespace Downtify
 
         public static bool IsSpotifyUrl(string str)
         {
-            return (IsSpotifyTrackAlbumUrl(str) || IsSpotifyPlaylistUrl(str));
-        }
-
-        public static bool IsSpotifyPlaylistUrl(string str)
-        {
-            return (new Regex(@"(https|http)://open.spotify.com/user/([A-Za-z]|[0-9]|_)*/playlist/([A-Za-z]|[0-9]|_)*")).Matches(str).Count != 0;
+            return (IsSpotifyTrackAlbumUrl(str));
         }
 
         public static bool IsSpotifyTrackAlbumUrl(string str)
         {
-            return (new Regex(@"(https|http)://open.spotify.com/(album|track)/([A-Za-z]|[0-9]|_)*")).Matches(str).Count != 0;
+            return (new Regex(@"(https|http)://open.spotify.com/(album|track|playlist)/([A-Za-z]|[0-9]|_)*")).Matches(str).Count != 0;
         }
 
         public static string SpotifyUrlToUri(string url)
@@ -555,12 +552,7 @@ namespace Downtify
             if (url == null)
                 return null;
 
-            var elements = url.Split('/');
-
-            if (IsSpotifyPlaylistUrl(url))
-            {
-                return "spotify:user:" + elements[4] + ":playlist:" + elements[6];
-            }
+            var elements = url.Split('/', '?');
 
             if (IsSpotifyTrackAlbumUrl(url))
             {
